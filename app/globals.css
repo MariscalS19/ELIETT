@@ -1,0 +1,22 @@
+@charset "UTF-8";
+@import "tailwindcss";
+
+:root {
+  --background: #171717;
+  --foreground: #ffffff;
+  --navbar-height: 3em;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-guida-mono-sharp), var(--font-guida-mono), monospace;
+  height: 100vh;
+}
