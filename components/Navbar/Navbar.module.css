@@ -1,0 +1,58 @@
+.navbar {
+    height: var(--navbar-height);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    padding: 0.8rem 0.5rem;
+    background-color: rgba(255, 255, 255, 0.989);
+    color: black;
+}
+
+.links {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.link {
+    font-weight: 200;
+    text-decoration: none;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 0.2rem;
+}
+
+
+.logo_container {
+    position: relative;
+    aspect-ratio: 1081/146;
+    width: 160px;
+    margin: auto auto;
+}
+
+.insta_button {
+    display: flex;
+    width: 1.7em;
+    height: 1.7em;
+    justify-content: center;
+    align-items: center;
+    justify-self: end;
+    margin: auto 1em auto 0;
+}
+
+.insta_button:hover {
+    color: white;
+    background-color: rgb(0, 0, 0);
+    border-radius: 33%;
+}
+
+.insta_icon {
+    align-self: center;
+    justify-self: center;
+    width: 70%;
+    height: 70%;
+}
