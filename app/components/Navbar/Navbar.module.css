@@ -44,6 +44,10 @@
     margin: auto 1em auto 0;
 }
 
+.insta_button:visited {
+    color: inherit;
+}
+
 .insta_button:hover {
     color: white;
     background-color: rgb(0, 0, 0);
