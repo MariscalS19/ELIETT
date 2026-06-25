@@ -4,6 +4,8 @@
   --background: #171717;
   --foreground: #ffffff;
   --navbar-height: 3em;
+  --font-guida-mono-sharp: 'Guida Mono Sharp', monospace;
+  --font-guida-mono: 'Guida Mono', monospace;
 }
 
 html,
