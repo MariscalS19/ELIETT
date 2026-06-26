@@ -1,12 +1,24 @@
-export default function Login() {
+import styles from './LoginPage.module.css';
+import Image from "next/image";
+import Login from "@/app/components/Login";
+
+export default function LoginPage() {
     return (
-        <div>
-            <h1>Login</h1>
-            <form>
-                <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" />
-                <button type="submit">Login</button>
-            </form>
-        </div>
-    );
+        <div className={styles.loginPage}>
+            <Login />
+            <div className={styles.img_container}>
+                <Image
+                    className={styles.login_img}
+                    src="/loginCover.webp"
+                    alt="Login background image"
+                    fill
+                    priority
+                    sizes="50vw"
+                    quality={100}
+                    unoptimized
+                />
+            </div>
+        </div >
+
+    )
 }
