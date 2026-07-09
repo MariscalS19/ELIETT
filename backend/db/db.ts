@@ -1,6 +1,6 @@
 import mysql from "mysql2/promise";
 
-//forcing the poo as global to avoid duplicates in next.js hot reload
+//forcing the pool as global to avoid duplicates in next.js hot reload
 const globalForDb = globalThis as unknown as {
     connPool: mysql.Pool | undefined;
 };
