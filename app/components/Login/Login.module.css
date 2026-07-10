@@ -54,7 +54,7 @@
     transform: translateY(-50%);
     width: 1.5em;
     height: 1.5em;
-    color: rgb(250, 250, 250);
+    color: white;
     transition: color 0.3s ease;
 }
 
@@ -116,4 +116,25 @@
 
 .loginInput:focus~.inputIcon {
     color: #ffffff;
+}
+
+.iconError {
+    color: red;
+}
+
+.inputError {
+    border-bottom: 2px solid red;
+}
+
+.labelError {
+    color: red;
+}
+
+.errorMessage {
+    margin: 0;
+    position: absolute;
+    top: 110%;
+    color: red;
+    font-size: 0.9em;
+
 }

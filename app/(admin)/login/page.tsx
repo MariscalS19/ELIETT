@@ -14,8 +14,7 @@ export default function LoginPage() {
                     fill
                     priority
                     sizes="50vw"
-                    quality={100}
-                    unoptimized
+                    quality={75}
                 />
             </div>
         </div >
