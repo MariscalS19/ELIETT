@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p $PORT",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "rm -rf .next && next build && next start -p 3003"
+
   },
   "dependencies": {
     "argon2-wasm": "^0.9.0",

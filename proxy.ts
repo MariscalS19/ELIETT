@@ -15,12 +15,12 @@ export default async function proxy(request: NextRequest) {
         }
     };
 
-    if (pathname.startsWith('/login')) {
+    if (pathname === '/login' && request.method === 'GET') {
         if (isValidToken) {
             const dashboardUrl = new URL('/admin/dashboard', request.url);
             return NextResponse.redirect(dashboardUrl);
         }
-    };
+    }
 
     return NextResponse.next();
 }

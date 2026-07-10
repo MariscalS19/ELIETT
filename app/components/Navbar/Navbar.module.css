@@ -42,10 +42,15 @@
     align-items: center;
     justify-self: end;
     margin: auto 1em auto 0;
+    color: black;
 }
 
-.insta_button:visited {
-    color: inherit;
+.insta_icon:link {
+    color: black;
+}
+
+.insta_icon:visited {
+    color: black;
 }
 
 .insta_button:hover {

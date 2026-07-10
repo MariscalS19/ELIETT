@@ -11,13 +11,12 @@ export async function logAdminAction(prevState: any, formData: FormData) {
         return { success: false, message: 'Password is required' }
     }
 
-    const hashedPassword = process.env.ADMIN_HASH
-    if (!hashedPassword) {
+    const base64Hash = process.env.ADMIN_HASH_B64;
+    if (!base64Hash) {
         return { success: false, message: 'Admin password hash is not set in environment variables' }
     }
-
+    const hashedPassword = Buffer.from(base64Hash, 'base64').toString('utf-8');
     const isPasswordValid = await verifyAdminPassword(hashedPassword, password)
-
     if (!isPasswordValid) {
         return { success: false, message: 'Invalid password' }
     }
@@ -29,7 +28,7 @@ export async function logAdminAction(prevState: any, formData: FormData) {
         cookieStore.set('admin_session', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            sameSite: 'lax',
             maxAge: 12 * 60 * 60,
             path: '/',
         })
