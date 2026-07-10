@@ -1,0 +1,140 @@
+.loginContainer {
+    width: 55vw;
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    border-radius: 1em;
+    margin: auto;
+}
+
+.loginHeader {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.3em;
+}
+
+
+.loginTitle {
+    font-family: var(--font-guida-mono-sharp), monospace;
+    font-weight: 100;
+    font-size: 6em;
+    margin: 0;
+    margin-top: 0;
+}
+
+.loginSubtitle {
+    font-family: var(--font-guida-mono-sharp), monospace;
+    font-weight: 100;
+    font-size: 2em;
+    margin: 0;
+    margin-top: 0.5em;
+}
+
+.loginForm {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+}
+
+.inputWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.inputIcon {
+    position: absolute;
+    left: 0.5em;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.5em;
+    height: 1.5em;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.loginInput {
+    width: 100%;
+    padding: 0.9em 0.9em 0.9em 2.8em;
+    font-size: 1em;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(245, 245, 245, 0.5);
+    outline: none;
+    color: whitesmoke;
+    text-indent: 2.5em;
+    transition: border-color 0.3s ease;
+}
+
+.loginInput:focus {
+    border-bottom: 2px solid whitesmoke;
+}
+
+.loginButton {
+    width: 35%;
+    border-radius: 1em;
+    padding: 0.7em;
+    font-size: 1em;
+    background-color: whitesmoke;
+    color: #333;
+    border: none;
+    cursor: pointer;
+    margin: 0 auto;
+    margin-top: 2em;
+    transition: all 0.3s ease;
+}
+
+.loginButton:hover {
+    color: white;
+    background-color: #000000;
+    outline: 3px solid whitesmoke;
+}
+
+.loginLabel {
+    position: absolute;
+    left: 2.8em;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1em;
+    color: rgba(245, 245, 245, 0.6);
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.loginInput:focus~.loginLabel,
+.loginInput:not(:placeholder-shown)~.loginLabel {
+    top: -0.3em;
+    left: 0.2em;
+    font-size: 0.8em;
+    color: whitesmoke;
+}
+
+.loginInput:focus~.inputIcon {
+    color: #ffffff;
+}
+
+.iconError {
+    color: red;
+}
+
+.inputError {
+    border-bottom: 2px solid red;
+}
+
+.labelError {
+    color: red;
+}
+
+.errorMessage {
+    margin: 0;
+    position: absolute;
+    top: 110%;
+    color: red;
+    font-size: 0.9em;
+
+}
