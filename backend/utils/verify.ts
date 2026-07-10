@@ -1,4 +1,4 @@
-import argon2 from "argon2";
+import argon2 from 'argon2-wasm';
 export default async function verifyAdminPassword(hashedPassword: string, plainPassword: string): Promise<boolean> {
     try {
         return await argon2.verify(hashedPassword, plainPassword);
