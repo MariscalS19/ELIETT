@@ -15,13 +15,15 @@ export async function logAdminAction(prevState: any, formData: FormData) {
     if (!base64Hash) {
         return { success: false, message: 'Admin password hash is not set in environment variables' }
     }
-    const hashedPassword = Buffer.from(base64Hash, 'base64').toString('utf-8');
-    const isPasswordValid = await verifyAdminPassword(hashedPassword, password)
-    if (!isPasswordValid) {
-        return { success: false, message: 'Invalid password' }
-    }
 
     try {
+        const hashedPassword = Buffer.from(base64Hash, 'base64').toString('utf-8');
+        const isPasswordValid = await verifyAdminPassword(hashedPassword, password)
+
+        if (!isPasswordValid) {
+            return { success: false, message: 'Invalid password' }
+        }
+
         const token = await signJWT({ id: 1, user: 'eliett-admin' })
 
         const cookieStore = await cookies();
@@ -32,7 +34,10 @@ export async function logAdminAction(prevState: any, formData: FormData) {
             maxAge: 12 * 60 * 60,
             path: '/',
         })
-    } catch (error) {
+    } catch (error: any) {
+        if (error.message === 'NEXT_REDIRECT') {
+            throw error;
+        }
         console.error("Error during admin action logging:", error);
         return { success: false, message: 'An error occurred while logging the action' }
     }

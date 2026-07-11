@@ -21,6 +21,9 @@ export async function signJWT(payload: { id: number, user: string }) {
 
 export async function verifyJWT(token: string) {
     const secretString = process.env.JWT_SECRET;
+    if (!secretString) {
+        throw new Error('JWT_SECRET no está definido');
+    }
     const secretKey = new TextEncoder().encode(secretString);
 
     try {
