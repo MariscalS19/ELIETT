@@ -1,24 +1,24 @@
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextRequest } from 'next/server';
 import { verifyJWT } from './backend/utils/authUtils';
 
 export default async function proxy(request: NextRequest) {
-    const { pathname } = request.nextUrl;
+    const pathname = request.nextUrl.pathname.replace(/\/$/, '') || '/';
     const token = request.cookies.get('admin_session')?.value;
 
     const isValidToken = token ? await verifyJWT(token) : false;
 
-    if (pathname.startsWith('/admin/dashboard')) {
+    if (pathname.startsWith('/admin')) {
         if (!isValidToken) {
-            const loginUrl = new URL('/login', request.url);
-            return NextResponse.redirect(loginUrl);
+            console.log('Redirecting to /login due to invalid or missing token');
+            return NextResponse.redirect(new URL('/login', request.url));
         }
     };
 
-    if (pathname === '/login' && request.method === 'GET') {
+    if (pathname.startsWith('/login') && request.method === 'GET') {
         if (isValidToken) {
-            const dashboardUrl = new URL('/admin/dashboard', request.url);
-            return NextResponse.redirect(dashboardUrl);
+            console.log('Redirecting to /admin/dashboard, user is already authenticated');
+            return NextResponse.redirect(new URL('/admin/dashboard', request.url));
         }
     }
 
