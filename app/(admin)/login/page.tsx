@@ -1,11 +1,11 @@
 import styles from './LoginPage.module.css';
 import Image from "next/image";
-import Login from "@/app/components/Login";
+import LoginForm from "@/app/components/LoginForm";
 
 export default function LoginPage() {
     return (
         <div className={styles.loginPage}>
-            <Login />
+            <LoginForm />
             <div className={styles.img_container}>
                 <Image
                     className={styles.login_img}

@@ -41,5 +41,5 @@ export async function logAdminAction(prevState: any, formData: FormData) {
         console.error("Error during admin action logging:", error);
         return { success: false, message: 'An error occurred while logging the action' }
     }
-    redirect('/admin/dashboard');
+    return { success: true, message: 'Action logged successfully' }
 }

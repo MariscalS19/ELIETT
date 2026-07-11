@@ -1,12 +1,21 @@
 'use client';
-import styles from './Login.module.css';
+import styles from './LoginForm.module.css';
 import { PasswordIcon } from '../icons/PasswordIcon';
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { logAdminAction } from '@/backend/actions/authActions';
 
-function Login() {
+function LoginForm() {
+    const router = useRouter();
     const [state, formAction, isPending] = useActionState(logAdminAction, null);
     const hasError = state && !state.success;
+
+    useEffect(() => {
+        if (state?.success) {
+            router.replace('/admin/dashboard');
+        }
+    }, [state, router]);
+
     return (
         <div className={styles.loginContainer}>
             <div className={styles.loginHeader}>
@@ -27,4 +36,4 @@ function Login() {
         </div>
     );
 }
-export default Login;
+export default LoginForm;
