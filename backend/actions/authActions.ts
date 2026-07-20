@@ -1,8 +1,9 @@
 'use server';
-import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import verifyAdminPassword from '@/backend/utils/verify';
 import { signJWT } from '@/backend/utils/authUtils';
+const COOKIE_NAME = 'admin_session';
+const COOKIE_MAX_AGE = 336 * 60 * 60; // 336 hours in seconds | 2 weeks
 
 export async function logAdminAction(prevState: any, formData: FormData) {
     const password = formData.get('password')?.toString()
@@ -27,11 +28,11 @@ export async function logAdminAction(prevState: any, formData: FormData) {
         const token = await signJWT({ id: 1, user: 'eliett-admin' })
 
         const cookieStore = await cookies();
-        cookieStore.set('admin_session', token, {
+        cookieStore.set(COOKIE_NAME, token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
-            maxAge: 12 * 60 * 60,
+            maxAge: COOKIE_MAX_AGE,
             path: '/',
         })
     } catch (error: any) {
