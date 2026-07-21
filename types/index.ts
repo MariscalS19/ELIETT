@@ -1,4 +1,2 @@
-export interface Producto {
-    SKU: number
-    nombre: string
-}
+export * from './product';
+export * from './IconProps';

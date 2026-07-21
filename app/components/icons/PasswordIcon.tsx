@@ -1,4 +1,4 @@
-import { IconProps } from "@/backend/types/IconProps";
+import { IconProps } from "@/types";
 
 export function PasswordIcon({ className, ...props }: IconProps) {
     return (
