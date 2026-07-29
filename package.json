@@ -1,31 +1,30 @@
 {
-  "name": "eliett",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start -p $PORT",
-    "lint": "eslint",
-    "test": "rm -rf .next && next build && next start -p 3003"
-  },
-  "dependencies": {
-    "dotenv": "^17.4.2",
-    "hash-wasm": "^4.12.0",
-    "jose": "^6.2.3",
-    "mysql2": "^3.22.5",
-    "next": "^16.2.9",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.9",
-    "tsx": "^4.23.0",
-    "typescript": "^5"
-  }
+    "name": "eliett",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start -p $PORT",
+        "lint": "eslint",
+        "test": "rm -rf .next && next build && next start -p 3003"
+    },
+    "dependencies": {
+        "dotenv": "^17.4.2",
+        "hash-wasm": "^4.12.0",
+        "jose": "^6.2.3",
+        "mysql2": "^3.22.5",
+        "next": "^16.2.9",
+        "react": "19.2.4",
+        "react-dom": "19.2.4"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "eslint": "^9",
+        "eslint-config-next": "16.2.9",
+        "typescript": "^5"
+    }
 }
