@@ -2,31 +2,39 @@
 import { cookies } from 'next/headers';
 import verifyAdminPassword from '@/backend/utils/verify';
 import { signJWT } from '@/backend/utils/authUtils';
+import { pool } from '@/backend/db/db';
+
 const COOKIE_NAME = 'admin_session';
 const COOKIE_MAX_AGE = 336 * 60 * 60; // 336 hours in seconds | 2 weeks
 
 export async function logAdminAction(prevState: any, formData: FormData) {
-    const password = formData.get('password')?.toString()
+    const password = formData.get('password')?.toString();
 
     if (!password || password.trim() === '') {
-        return { success: false, message: 'Password is required' }
-    }
-
-    const base64Hash = process.env.ADMIN_HASH_B64;
-    if (!base64Hash) {
-        return { success: false, message: 'Admin password hash is not set in environment variables' }
+        return { success: false, message: 'Password is required' };
     }
 
     try {
-        const hashedPassword = Buffer.from(base64Hash, 'base64').toString('utf-8');
-        const isPasswordValid = await verifyAdminPassword(hashedPassword, password)
+        const [rows]: any = await pool.execute(
+            'SELECT id, username, password_hash FROM users WHERE username = ?',
+            ['eliett']
+        );
 
-        if (!isPasswordValid) {
-            return { success: false, message: 'Invalid password' }
+        if (!rows || rows.length === 0) {
+            return { success: false, message: 'Invalid credentials' };
         }
 
-        const token = await signJWT({ id: 1, user: 'eliett-admin' })
+        const user = rows[0];
+        const isPasswordValid = await verifyAdminPassword(
+            user.password_hash,
+            password
+        );
 
+        if (!isPasswordValid) {
+            return { success: false, message: 'Invalid credentials' };
+        }
+
+        const token = await signJWT({ id: user.id, user: user.username });
         const cookieStore = await cookies();
         cookieStore.set(COOKIE_NAME, token, {
             httpOnly: true,
@@ -34,13 +42,16 @@ export async function logAdminAction(prevState: any, formData: FormData) {
             sameSite: 'lax',
             maxAge: COOKIE_MAX_AGE,
             path: '/',
-        })
+        });
+        return { success: true, message: 'Action logged successfully' };
     } catch (error: any) {
         if (error.message === 'NEXT_REDIRECT') {
-            throw error;
+            throw error; // Re-throw the redirect error to be handled by Next.js
         }
-        console.error("Error during admin action logging:", error);
-        return { success: false, message: 'An error occurred while logging the action' }
+        console.error('Error during admin action logging:', error);
+        return {
+            success: false,
+            message: 'An error occurred while logging the action',
+        };
     }
-    return { success: true, message: 'Action logged successfully' }
 }
