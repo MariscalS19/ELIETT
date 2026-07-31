@@ -1,14 +1,14 @@
-import Navbar from "../components/Navbar";
+import Navbar from '../components/Navbar';
 
 export default function ShopLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <>
-      <Navbar />
-      {children}
-    </>
-  );
+    return (
+        <>
+            <Navbar />
+            {children}
+        </>
+    );
 }
