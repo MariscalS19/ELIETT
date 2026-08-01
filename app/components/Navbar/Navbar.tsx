@@ -12,7 +12,7 @@ function Navbar() {
 
             <div className={styles.logo_container}>
                 <Image
-                    src='/brand/eliett_black_logo.svg'
+                    src='/eliett_black_logo.svg'
                     alt='ELLIET logo'
                     fill
                     unoptimized

@@ -9,7 +9,7 @@ export default function LoginPage() {
             <div className={styles.img_container}>
                 <Image
                     className={styles.login_img}
-                    src='/ui/loginCover.webp'
+                    src='/loginCover.webp'
                     alt='Login background image'
                     fill
                     priority

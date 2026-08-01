@@ -8,22 +8,22 @@ export const metadata: Metadata = {
     icons: {
         icon: [
             {
-                url: '/favicons/favicon-16x16.png',
+                url: '/favicon-16x16.png',
                 sizes: '16x16',
                 type: 'image/png',
             },
             {
-                url: '/favicons/favicon-32x32.png',
+                url: '/favicon-32x32.png',
                 sizes: '32x32',
                 type: 'image/png',
             },
             {
-                url: '/favicons/favicon-96x96.png',
+                url: '/favicon-96x96.png',
                 sizes: '96x96',
                 type: 'image/png',
             },
         ],
-        apple: [{ url: '/favicons/apple-icon-180x180.png', sizes: '180x180' }],
+        apple: [{ url: '/apple-icon-180x180.png', sizes: '180x180' }],
     },
 };
 

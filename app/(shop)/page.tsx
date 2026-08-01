@@ -6,7 +6,7 @@ export default function Home() {
             <div className={styles.home_img_container}>
                 <Image
                     className={styles.home_img}
-                    src='/ui/mainCover.webp'
+                    src='/mainCover.webp'
                     alt='Background image'
                     fill
                     priority
