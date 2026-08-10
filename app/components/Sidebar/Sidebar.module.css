@@ -1,0 +1,84 @@
+.sidebar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    height: 100vh;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, #17141f 0%, #0d0d12 100%);
+    color: white;
+    box-shadow:
+        inset -1px 0 0 rgba(255, 255, 255, 0.04),
+        0 26px 60px rgba(8, 8, 12, 0.45);
+    overflow: hidden;
+    border-left: 1px solid rgb(0, 0, 0);
+}
+
+.sidebarHeader {
+    padding: 1.25rem 1rem 0.9rem;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.02) 0%,
+        rgba(97, 58, 180, 1)
+    );
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebarTitle {
+    margin: 0;
+    font-size: 1.2rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: white;
+    font-weight: 700;
+}
+
+.sidebarNav {
+    width: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0;
+}
+
+.sidebarLinks {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.settingsLink {
+    width: 100%;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sidebar a {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    color: white;
+    text-decoration: none;
+    padding: 0.9rem 1rem;
+    text-align: left;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        transform 0.2s ease;
+    border: none;
+    border-radius: 0;
+}
+
+.sidebar a:hover {
+    background: linear-gradient(
+        90deg,
+        rgba(190, 146, 255, 0.28),
+        rgba(255, 255, 255, 0.06)
+    );
+    color: #ffffff;
+    transform: translateX(0);
+}
