@@ -1,23 +1,24 @@
 @charset "UTF-8";
 
 :root {
-  --background: #171717;
-  --foreground: #ffffff;
-  --navbar-height: 3em;
-  --font-guida-mono-sharp: 'Guida Mono Sharp', monospace;
-  --font-guida-mono: 'Guida Mono', monospace;
+    --background: #171717;
+    --foreground: #ffffff;
+    --navbar-height: 2em;
+    --font-guida-mono-sharp: 'Guida Mono Sharp', monospace;
+    --font-guida-mono: 'Guida Mono', monospace;
 }
 
 html,
 body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-guida-mono-sharp), var(--font-guida-mono), monospace;
-  height: 100vh;
+    background: var(--background);
+    color: var(--foreground);
+    font-family:
+        var(--font-guida-mono-sharp), var(--font-guida-mono), monospace;
+    height: 100vh;
 }

@@ -1,31 +1,49 @@
 .navbar {
-    height: var(--navbar-height);
-    position: sticky;
-    top: 0;
+    width: 100%;
+    max-width: 100%;
+    min-height: var(--navbar-height);
+    position: fixed;
+    inset: 0 0 auto 0;
     z-index: 100;
+    box-sizing: border-box;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    padding: 0.8rem 0.5rem;
+    padding: 0.8rem 0.8rem;
     background-color: rgba(255, 255, 255, 0.989);
     color: black;
+    border-bottom: 2px solid rgba(131, 108, 108, 0.2);
 }
 
 .links {
     display: flex;
-    gap: 3rem;
+    gap: 1rem;
     justify-content: center;
     align-items: center;
 }
 
 .link {
-    font-weight: 200;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-family: var(--font-guida-mono);
+    font-weight: 500;
     text-decoration: none;
     font-size: 0.8rem;
     text-transform: uppercase;
-    text-align: center;
     letter-spacing: 0.2rem;
+    padding: 0 1rem;
 }
 
+.link:visited {
+    color: black;
+}
+
+.link:hover {
+    color: white;
+    background-color: rgb(0, 0, 0);
+    border-radius: 10px;
+}
 
 .logo_container {
     position: relative;

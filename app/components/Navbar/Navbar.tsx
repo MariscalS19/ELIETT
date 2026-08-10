@@ -5,9 +5,15 @@ function Navbar() {
     return (
         <nav className={styles.navbar}>
             <div className={styles.links}>
-                {/* <a href="" className={styles.link}>New</a>
-                <a href="" className={styles.link}>Shop</a>
-                <a href="" className={styles.link}>About</a> */}
+                {/* <a href='' className={styles.link}>
+                    New
+                </a>
+                <a href='' className={styles.link}>
+                    Shop
+                </a>
+                <a href='' className={styles.link}>
+                    About
+                </a> */}
             </div>
 
             <div className={styles.logo_container}>
