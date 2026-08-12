@@ -53,33 +53,50 @@
 }
 
 .insta_button {
-    display: flex;
-    width: 1.7em;
-    height: 1.7em;
+    display: inline-flex;
+    width: 1.9rem;
+    height: 1.9rem;
     justify-content: center;
     align-items: center;
     justify-self: end;
-    margin: auto 1em auto 0;
-    color: black;
-}
-
-.insta_icon:link {
-    color: black;
-}
-
-.insta_icon:visited {
-    color: black;
-}
-
-.insta_button:hover {
-    color: white;
-    background-color: rgb(0, 0, 0);
-    border-radius: 33%;
+    margin: auto 1rem auto 0;
+    padding: 0.1rem;
+    color: #111111;
+    background: rgba(17, 17, 17, 0.04);
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    border-radius: 0.8rem;
+    box-shadow: 0 4px 10px rgba(17, 17, 17, 0.08);
+    box-sizing: border-box;
+    text-decoration: none;
+    transition:
+        color 0.2s ease,
+        background 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .insta_icon {
-    align-self: center;
-    justify-self: center;
-    width: 70%;
-    height: 70%;
+    width: 1.2rem;
+    height: 1.2rem;
+    display: block;
+    stroke: currentColor;
+    stroke-width: 1.8px;
+    transition: stroke 0.2s ease;
+}
+
+.insta_button:hover,
+.insta_button:focus-visible {
+    background: linear-gradient(135deg, #111111 0%, #3a2d2d 100%);
+    box-shadow: 0 8px 18px rgba(17, 17, 17, 0.18);
+    transform: translateY(-1px);
+}
+
+.insta_button:link,
+.insta_button:visited {
+    background: rgba(107, 42, 42, 0.04);
+}
+
+.insta_button:focus-visible {
+    outline: 2px solid rgba(17, 17, 17, 0.25);
+    outline-offset: 2px;
 }
