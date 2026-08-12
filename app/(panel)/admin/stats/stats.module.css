@@ -1,53 +1,6 @@
-.productList {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-}
-
-.productCard {
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 0.95rem;
-    background: #f8fafc;
-}
-
-.productTitleRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.productCard h3 {
-    margin: 0;
-    color: #0f172a;
-}
-
-.productCard p {
-    margin: 0.4rem 0 0.6rem;
-    color: #64748b;
-    line-height: 1.45;
-}
-
-.productMeta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #475569;
-    font-size: 0.9rem;
-}
-
-.status {
-    border-radius: 999px;
-    padding: 0.3rem 0.6rem;
-    background: #dbeafe;
-    color: #1d4ed8;
-    font-size: 0.76rem;
-    font-weight: 700;
-}
-
 .statsGrid {
     display: grid;
+    box-sizing: border-box;
     gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
@@ -84,30 +37,4 @@
     margin: 0;
     color: #64748b;
     line-height: 1.6;
-}
-
-@media (max-width: 900px) {
-    .page {
-        grid-template-columns: 1fr;
-    }
-
-    .sidebar {
-        order: 2;
-    }
-}
-
-@media (max-width: 640px) {
-    .page {
-        padding: 1rem;
-    }
-
-    .hero {
-        flex-direction: column;
-    }
-
-    .primaryButton,
-    .secondaryButton,
-    .addButton {
-        width: 100%;
-    }
 }
