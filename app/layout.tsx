@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { guidaMono, guidaMonoSharp } from './fonts';
+import { sileo, Toaster } from 'sileo';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -39,7 +40,10 @@ export default function RootLayout({
             <head>
                 <meta charSet='utf-8' />
             </head>
-            <body>{children}</body>
+            <body>
+                {children}
+                <Toaster position='top-center' theme='dark' />
+            </body>
         </html>
     );
 }
