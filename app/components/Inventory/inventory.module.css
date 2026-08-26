@@ -1,0 +1,274 @@
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1.5rem;
+    border-radius: 24px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.05);
+}
+
+.eyebrow {
+    margin: 0 0 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #475569;
+}
+
+.panelHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.panelHeader h2,
+.drawerHeader h3,
+.sectionHeader h4 {
+    margin: 0;
+    color: #0f172a;
+}
+
+.panelHeader h2 {
+    font-size: 1.35rem;
+}
+
+.summaryGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.9rem;
+}
+
+.summaryCard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1rem;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    border: 1px solid #e2e8f0;
+}
+
+.summaryCard span {
+    font-size: 0.75rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.summaryCard strong {
+    font-size: 1.6rem;
+    color: #0f172a;
+}
+
+.productGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.drawerOverlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: flex-end;
+    background: rgba(15, 23, 42, 0.48);
+    z-index: 50;
+}
+
+.drawerPanel {
+    width: min(42rem, 92vw);
+    height: 100%;
+    background: #ffffff;
+    border-left: 1px solid #e2e8f0;
+    box-shadow: -20px 0 40px rgba(15, 23, 42, 0.12);
+    display: flex;
+    flex-direction: column;
+}
+
+.drawerHeader,
+.drawerFooter,
+.sectionHeader,
+.visibilityRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.drawerHeader,
+.drawerFooter {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.drawerFooter {
+    border-top: 1px solid #e2e8f0;
+    border-bottom: none;
+    margin-top: auto;
+}
+
+.closeButton {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 999px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.drawerBody {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+}
+
+.drawerGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.drawerField,
+.drawerFieldWide {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    color: #334155;
+    font-size: 0.9rem;
+}
+
+.drawerFieldWide {
+    grid-column: 1 / -1;
+}
+
+.drawerField input,
+.drawerField textarea,
+.drawerFieldWide input,
+.drawerFieldWide textarea,
+.inventoryItem input {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 0.8rem 0.9rem;
+    background: #f8fafc;
+    color: #0f172a;
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.drawerField textarea,
+.drawerFieldWide textarea {
+    resize: vertical;
+}
+
+.imagesSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.imageUploadPlaceholder {
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px dashed #cbd5e1;
+    background: #eef2ff;
+    color: #475569;
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.inventoryList {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem;
+}
+
+.inventoryItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.8rem;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid #e2e8f0;
+}
+
+.inventoryItem span {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.deleteButton,
+.primaryButton,
+.secondaryButton {
+    border: none;
+    border-radius: 999px;
+    padding: 0.7rem 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.primaryButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+    background: #2563eb;
+    color: white;
+}
+
+.secondaryButton {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+.deleteButton {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.primaryButton:hover,
+.secondaryButton:hover,
+.deleteButton:hover,
+.switchOn:hover,
+.switchOff:hover,
+.closeButton:hover {
+    transform: translateY(-1px);
+}
+
+@media (max-width: 720px) {
+    .summaryGrid,
+    .drawerGrid,
+    .inventoryList {
+        grid-template-columns: 1fr;
+    }
+
+    .panelHeader,
+    .cardFooter,
+    .drawerFooter,
+    .sectionHeader,
+    .visibilityRow {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 721px) {
+    .summaryGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
