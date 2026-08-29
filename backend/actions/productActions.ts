@@ -9,6 +9,8 @@ import {
     updateProductVisibility,
 } from '@/backend/db/lib';
 import type { Product, ProductFormState, ProductImageInput } from '@/types';
+import fs from 'fs/promises';
+import path from 'path';
 
 type ActionResponse =
     | { success: true; product?: Product; message?: string }
@@ -20,11 +22,33 @@ type ActionResponse =
  * @returns A promise resolving to the URL of the uploaded image.
  */
 async function uploadProductImageActionFile(file: File): Promise<string> {
-    const { saveProcessedImage } =
-        await import('@/backend/utils/imageProcessing');
-
     const arrayBuffer = await file.arrayBuffer();
-    return saveProcessedImage(Buffer.from(arrayBuffer), file.name, 'products');
+    const buffer = Buffer.from(arrayBuffer);
+
+    const baseUploadPath =
+        process.env.SHARED_UPLOADS_PATH || path.join(process.cwd(), 'public', 'uploads');
+    const folder = 'products';
+    const targetDirectory = path.join(baseUploadPath, folder);
+
+    try {
+        await fs.access(targetDirectory);
+    } catch {
+        await fs.mkdir(targetDirectory, { recursive: true });
+    }
+
+    const safeFileName = `${path
+        .basename(file.name || 'image', path.extname(file.name || ''))
+        .replace(/[^a-zA-Z0-9-_]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
+        .toLowerCase() || 'product'}-${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2, 8)}${path.extname(file.name || '')}`;
+
+    const destinationPath = path.join(targetDirectory, safeFileName);
+    await fs.writeFile(destinationPath, buffer);
+
+    return `/uploads/${folder}/${safeFileName}`;
 }
 
 /**
@@ -298,8 +322,8 @@ export async function optimizeImageAction(
     width?: number,
     height?: number
 ): Promise<Buffer> {
-    const { optimizeImage } = await import('@/backend/utils/imageProcessing');
-    return optimizeImage(imageBuffer, width, height);
+    // Server-side image processing removed; return original buffer unchanged.
+    return imageBuffer;
 }
 
 export async function uploadProductImageAction(
