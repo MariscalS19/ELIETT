@@ -158,3 +158,17 @@
 .fileInput {
     display: none;
 }
+
+.compressingStatus {
+    margin-top: 0.75rem;
+    color: #0f172a;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.compressionError {
+    margin-top: 0.5rem;
+    color: #b91c1c;
+    font-weight: 600;
+    font-size: 0.9rem;
+}

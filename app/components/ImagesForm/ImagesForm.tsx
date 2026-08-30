@@ -1,13 +1,37 @@
 'use client';
 
-import { useState, useEffect, useRef, ChangeEvent } from 'react';
+import { useState, useEffect, useRef, ChangeEvent, useCallback } from 'react';
+import imageCompression, {
+    type Options as ImageCompressionOptions,
+} from 'browser-image-compression';
 import Sortable from 'sortablejs';
 import styles from './ImagesForm.module.css';
 import { ProductImageInput } from '@/types';
 
-type LocalImagePreview = ProductImageInput & {
-    fileName?: string;
+const COMPRESSION_OPTIONS: ImageCompressionOptions = {
+    maxSizeMB: 1.2,
+    maxWidthOrHeight: 2880,
+    useWebWorker: true,
+    fileType: 'image/webp',
+    initialQuality: 0.88,
 };
+
+const buildWebpName = (fileName: string) => {
+    const baseName = fileName.replace(/\.[^/.]+$/, '') || 'image';
+    return `${baseName}.webp`;
+};
+
+const toWebpFile = (file: File, blob: Blob) =>
+    new File([blob], buildWebpName(file.name), {
+        type: 'image/webp',
+        lastModified: file.lastModified,
+    });
+
+const normalizeImages = (list: ProductImageInput[]) =>
+    list.map((image, index) => ({
+        ...image,
+        position: index + 1,
+    }));
 
 interface ImagesFormProps {
     initialImages?: ProductImageInput[];
@@ -18,120 +42,142 @@ export default function ImagesForm({
     initialImages = [],
     onImagesChange,
 }: ImagesFormProps) {
-    const [images, setImages] = useState<LocalImagePreview[]>([]);
-    const gridRef = useRef<HTMLDivElement | null>(null);
+    const [images, setImages] = useState<ProductImageInput[]>([]);
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const onImagesChangeRef = useRef(onImagesChange);
+    onImagesChangeRef.current = onImagesChange;
 
-    const normalizeImages = (list: LocalImagePreview[]) =>
-        list.map((image, index) => ({
-            ...image,
-            position: index + 1,
-        }));
+    const sortableInstanceRef = useRef<Sortable | null>(null);
 
-    const reorderImages = (
-        list: LocalImagePreview[],
-        fromIndex: number,
-        toIndex: number
-    ) => {
-        if (fromIndex === toIndex) return normalizeImages(list);
-
-        const updated = [...list];
-        const [movedItem] = updated.splice(fromIndex, 1);
-        updated.splice(toIndex, 0, movedItem);
-
-        return normalizeImages(updated);
-    };
+    const [compressingMessage, setCompressingMessage] = useState<string | null>(
+        null
+    );
+    const [compressionError, setCompressionError] = useState<string | null>(
+        null
+    );
 
     useEffect(() => {
-        setImages((currentImages) =>
-            normalizeImages(
-                initialImages.map((image) => {
-                    const currentImage = currentImages.find(
-                        (item) =>
-                            item.id === image.id &&
-                            item.image_url === image.image_url
-                    );
-
-                    return {
-                        ...image,
-                        fileName:
-                            currentImage?.fileName ||
-                            (image as LocalImagePreview).fileName ||
-                            image.image_url.split('/').pop() ||
-                            'Imagen',
-                    };
-                })
-            )
-        );
+        setImages(() => normalizeImages(initialImages));
     }, [initialImages]);
 
-    // Inicializar SortableJS para permitir arrastrar y soltar
-    useEffect(() => {
-        if (!gridRef.current || images.length === 0) return;
+    const gridRefCallback = useCallback((node: HTMLDivElement | null) => {
+        if (sortableInstanceRef.current) {
+            sortableInstanceRef.current.destroy();
+            sortableInstanceRef.current = null;
+        }
 
-        const sortableInstance = new Sortable(gridRef.current, {
-            animation: 150,
-            ghostClass: styles.ghostCard,
-            handle: '.drag-handle',
-            onEnd: (evt) => {
-                const { oldIndex, newIndex } = evt;
-                if (
-                    oldIndex === undefined ||
-                    newIndex === undefined ||
-                    oldIndex === newIndex
-                )
-                    return;
+        if (node) {
+            sortableInstanceRef.current = new Sortable(node, {
+                animation: 150,
+                ghostClass: styles.ghostCard,
+                handle: '.drag-handle',
+                onEnd: (evt) => {
+                    const { oldIndex, newIndex } = evt;
+                    if (
+                        oldIndex === undefined ||
+                        newIndex === undefined ||
+                        oldIndex === newIndex
+                    )
+                        return;
 
-                const normalized = reorderImages(images, oldIndex, newIndex);
-                setImages(normalized);
-                onImagesChange(normalized);
-            },
-        });
+                    setImages((currentImages) => {
+                        const updated = [...currentImages];
+                        const [movedItem] = updated.splice(oldIndex, 1);
+                        updated.splice(newIndex, 0, movedItem);
 
-        return () => {
-            sortableInstance.destroy();
-        };
-    }, [images, onImagesChange]);
+                        const normalized = normalizeImages(updated);
 
-    const handleImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            const selectedFiles = Array.from(e.target.files);
-            const newImages: LocalImagePreview[] = selectedFiles.map(
-                (file, index) => ({
-                    id: Date.now() + index + Math.random(),
-                    image_url: URL.createObjectURL(file),
-                    position: images.length + index + 1,
-                    fileName: file.name,
+                        setTimeout(() => {
+                            onImagesChangeRef.current(normalized);
+                        }, 0);
+
+                        return normalized;
+                    });
+                },
+            });
+        }
+    }, []);
+
+    const handleImagesChange = async (e: ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) return;
+
+        const selectedFiles = Array.from(e.target.files);
+        const processed: ProductImageInput[] = [];
+        setCompressionError(null);
+
+        try {
+            for (const [index, file] of selectedFiles.entries()) {
+                setCompressingMessage(
+                    `Compressing image ${index + 1} of ${selectedFiles.length}...`
+                );
+
+                const compressedBlob = await imageCompression(
                     file,
-                })
-            );
+                    COMPRESSION_OPTIONS
+                );
+                const compressedFile = toWebpFile(file, compressedBlob);
+                const previewUrl = URL.createObjectURL(compressedFile);
 
-            const updatedList = normalizeImages([...images, ...newImages]);
-            setImages(updatedList);
-            onImagesChange(updatedList);
+                processed.push({
+                    id: crypto.randomUUID() as any,
+                    image_url: previewUrl,
+                    position: 0,
+                    fileName: compressedFile.name,
+                    file: compressedFile,
+                });
+            }
+
+            setImages((currentList) => {
+                const updatedList = normalizeImages([
+                    ...currentList,
+                    ...processed,
+                ]);
+                setTimeout(() => {
+                    onImagesChangeRef.current(updatedList);
+                }, 0);
+                return updatedList;
+            });
+        } catch (error) {
+            processed.forEach((image) => {
+                if (image.image_url.startsWith('blob:')) {
+                    URL.revokeObjectURL(image.image_url);
+                }
+            });
+            setCompressionError(
+                'Could not compress one or more images. Please try again.'
+            );
+            console.error('Error compressing images', error);
+        } finally {
+            setCompressingMessage(null);
             e.target.value = '';
         }
     };
 
-    const deleteImage = (id?: number, url?: string) => {
+    const deleteImage = (id?: number | string, url?: string) => {
         if (url?.startsWith('blob:')) {
             URL.revokeObjectURL(url);
         }
         if (id === undefined) return;
 
-        const updatedList = normalizeImages(
-            images.filter((img) => img.id !== id)
-        );
-        setImages(updatedList);
-        onImagesChange(updatedList);
+        setImages((currentList) => {
+            const updatedList = normalizeImages(
+                currentList.filter((img) => img.id !== id)
+            );
+            setTimeout(() => {
+                onImagesChangeRef.current(updatedList);
+            }, 0);
+            return updatedList;
+        });
     };
 
     return (
         <div className={styles.imagesSectionContainer}>
             <span className={styles.formLabel}>Add Images (Drag to order)</span>
+
             {images.length > 0 && (
                 <div className={styles.previewContainer}>
-                    <div ref={gridRef} className={styles.previewGrid}>
+                    {/* 🔥 Cambiamos ref={gridRef} por ref={gridRefCallback} */}
+                    <div ref={gridRefCallback} className={styles.previewGrid}>
                         {images.map((img, index) => (
                             <div
                                 key={img.id}
@@ -139,18 +185,14 @@ export default function ImagesForm({
                                 <span className={styles.badge}>
                                     {index + 1}
                                 </span>
-
                                 <img
                                     src={img.image_url}
                                     alt={`Preview ${index}`}
                                     className={styles.previewImage}
                                 />
-
                                 <div className={styles.previewTitle}>
-                                    {img.fileName ||
-                                        img.image_url.split('/').pop()}
+                                    {img.fileName}
                                 </div>
-
                                 <button
                                     type='button'
                                     onClick={() =>
@@ -169,20 +211,22 @@ export default function ImagesForm({
                 <button
                     type='button'
                     className={styles.uploadButton}
-                    onClick={() => inputRef.current?.click()}>
+                    onClick={() => inputRef.current?.click()}
+                    disabled={Boolean(compressingMessage)}>
                     Select images
                 </button>
-                <span className={styles.uploadHint}>
-                    The file name will appear below each preview.
-                </span>
                 <input
                     ref={inputRef}
                     type='file'
-                    accept='image/*'
                     multiple
+                    accept='image/*'
                     onChange={handleImagesChange}
-                    className={styles.fileInput}
+                    style={{ display: 'none' }}
                 />
+                {compressingMessage && <p>{compressingMessage}</p>}
+                {compressionError && (
+                    <p style={{ color: 'red' }}>{compressionError}</p>
+                )}
             </div>
         </div>
     );
