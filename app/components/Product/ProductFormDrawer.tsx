@@ -199,12 +199,7 @@ export default function ProductFormDrawer({
             const formData = new FormData();
             formData.append('payload', JSON.stringify(payload));
 
-            safeImages.forEach((image, index) => {
-                console.log(
-                    `Imagen ${index}:`,
-                    image.file,
-                    image.file instanceof File
-                );
+            safeImages.forEach((image) => {
                 if (image.file instanceof File) {
                     formData.append('images', image.file, image.file.name);
                 }
@@ -213,7 +208,7 @@ export default function ProductFormDrawer({
             await onSave(formData);
             onClose();
         } catch (error) {
-            console.error('Error al guardar el producto:', error);
+            console.error('Error saving the product', error);
         } finally {
             setIsSubmitting(false);
         }

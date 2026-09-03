@@ -31,6 +31,7 @@ export default function ProductCard({
                     sizes='(max-width: 768px) 100vw, 320px'
                     style={{ objectFit: 'cover' }}
                     quality={85}
+                    unoptimized
                 />
             </div>
 

@@ -24,9 +24,10 @@ type ActionResponse =
 async function uploadProductImageActionFile(file: File): Promise<string> {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-
     const baseUploadPath =
-        process.env.SHARED_UPLOADS_PATH || path.join(process.cwd(), 'public', 'uploads');
+        process.env.SHARED_UPLOADS_PATH ||
+        path.join(process.cwd(), 'public', 'uploads');
+
     const folder = 'products';
     const targetDirectory = path.join(baseUploadPath, folder);
 
@@ -36,12 +37,14 @@ async function uploadProductImageActionFile(file: File): Promise<string> {
         await fs.mkdir(targetDirectory, { recursive: true });
     }
 
-    const safeFileName = `${path
-        .basename(file.name || 'image', path.extname(file.name || ''))
-        .replace(/[^a-zA-Z0-9-_]+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-|-$/g, '')
-        .toLowerCase() || 'product'}-${Date.now()}-${Math.random()
+    const safeFileName = `${
+        path
+            .basename(file.name || 'image', path.extname(file.name || ''))
+            .replace(/[^a-zA-Z0-9-_]+/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-|-$/g, '')
+            .toLowerCase() || 'product'
+    }-${Date.now()}-${Math.random()
         .toString(36)
         .slice(2, 8)}${path.extname(file.name || '')}`;
 
