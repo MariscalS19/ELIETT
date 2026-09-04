@@ -24,9 +24,11 @@ type ActionResponse =
 async function uploadProductImageActionFile(file: File): Promise<string> {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const baseUploadPath =
-        process.env.SHARED_UPLOADS_PATH ||
-        path.join(process.cwd(), 'public', 'uploads');
+    const baseUploadPath = process.env.SHARED_UPLOADS_PATH;
+
+    if (!baseUploadPath) {
+        throw new Error('Shared uploads path is not defined.');
+    }
 
     const folder = 'products';
     const targetDirectory = path.join(baseUploadPath, folder);
