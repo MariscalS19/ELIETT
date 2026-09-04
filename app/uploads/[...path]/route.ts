@@ -13,7 +13,14 @@ const MIME_TYPES: Record<string, string> = {
 };
 
 function getUploadsRoot() {
-    return process.env.SHARED_UPLOADS_PATH || null;
+    const isDev = process.env.NODE_ENV === 'development';
+    const devUploadPath = process.env.DEV_SHARED_UPLOADS_PATH;
+
+    if (isDev && !devUploadPath) {
+        return null;
+    }
+
+    return isDev ? devUploadPath : process.env.SHARED_UPLOADS_PATH || null;
 }
 
 function resolveSafePath(rootPath: string, segments: string[]) {
