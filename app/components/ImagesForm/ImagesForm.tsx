@@ -33,6 +33,14 @@ const normalizeImages = (list: ProductImageInput[]) =>
         position: index + 1,
     }));
 
+const sortImagesByPosition = (list: ProductImageInput[]) =>
+    [...list].sort((left, right) => {
+        const leftPosition = left.position ?? 0;
+        const rightPosition = right.position ?? 0;
+
+        return leftPosition - rightPosition;
+    });
+
 interface ImagesFormProps {
     initialImages?: ProductImageInput[];
     onImagesChange: (imagenes: ProductImageInput[]) => void;
@@ -57,7 +65,7 @@ export default function ImagesForm({
     );
 
     useEffect(() => {
-        setImages(() => normalizeImages(initialImages));
+        setImages(() => normalizeImages(sortImagesByPosition(initialImages)));
     }, [initialImages]);
 
     const gridRefCallback = useCallback((node: HTMLDivElement | null) => {

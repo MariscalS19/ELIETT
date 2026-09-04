@@ -25,6 +25,14 @@ interface FormFieldProps {
 
 const SIZES: Array<ProductVariant['size']> = ['S', 'M', 'L'];
 
+const sortImagesByPosition = (images: ProductFormState['images'] = []) =>
+    [...images].sort((left, right) => {
+        const leftPosition = left.position ?? 0;
+        const rightPosition = right.position ?? 0;
+
+        return leftPosition - rightPosition;
+    });
+
 /**
  * Creates an initial empty form state based on {@link ProductFormState} type.
  *
@@ -65,7 +73,7 @@ const toFormState = (product?: Product | null): ProductFormState => {
         gdl_price: product.gdl_price,
         foreigner_price: product.foreigner_price,
         inventory: product.inventory.map((variant) => ({ ...variant })),
-        images: product.images.map((img) => ({
+        images: sortImagesByPosition(product.images).map((img) => ({
             id: img.id,
             image_url: img.image_url,
             position: img.position,
