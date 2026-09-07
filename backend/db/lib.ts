@@ -1,9 +1,43 @@
 import { pool } from './db';
 import { Product, ProductFormState } from '@/types';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
+import fs from 'fs/promises';
+import path from 'path';
 
 // Interface to map the rows returned by MySQL in the read queries
 interface ProductRow extends Product, RowDataPacket {}
+
+function getUploadsRoot() {
+    const isDev = process.env.NODE_ENV === 'development';
+    const devUploadPath = process.env.DEV_SHARED_UPLOADS_PATH;
+
+    if (isDev && !devUploadPath) {
+        return null;
+    }
+
+    return isDev ? devUploadPath : process.env.SHARED_UPLOADS_PATH || null;
+}
+
+function resolveStoredFilePath(imageUrl: string | null | undefined): string | null {
+    if (!imageUrl || !imageUrl.startsWith('/uploads/')) {
+        return null;
+    }
+
+    const rootPath = getUploadsRoot();
+    if (!rootPath) {
+        return null;
+    }
+
+    const relativePath = imageUrl.replace(/^\/uploads\//, '');
+    const resolved = path.resolve(rootPath, relativePath);
+    const normalizedRoot = path.resolve(rootPath) + path.sep;
+
+    if (!resolved.startsWith(normalizedRoot)) {
+        return null;
+    }
+
+    return resolved;
+}
 
 // Helper to build the query with JSON aggregation
 const SELECT_PRODUCTS_QUERY = `
@@ -210,9 +244,49 @@ export async function updateProductVisibility(
 }
 
 export async function deleteProduct(productId: number): Promise<boolean> {
-    const [result] = await pool.execute<ResultSetHeader>(
-        `DELETE FROM products WHERE id = ?`,
-        [productId]
-    );
-    return result.affectedRows > 0;
+    const connection = await pool.getConnection();
+
+    try {
+        await connection.beginTransaction();
+
+        const [images] = await connection.execute<RowDataPacket[]>(
+            `SELECT image_url FROM product_images WHERE product_id = ?`,
+            [productId]
+        );
+
+        for (const image of images) {
+            const filePath = resolveStoredFilePath(image.image_url as string | null);
+
+            if (!filePath) continue;
+
+            try {
+                await fs.unlink(filePath);
+            } catch {
+                // Ignore missing files; we still want to delete the product record.
+            }
+        }
+
+        await connection.execute<ResultSetHeader>(
+            `DELETE FROM product_images WHERE product_id = ?`,
+            [productId]
+        );
+
+        await connection.execute<ResultSetHeader>(
+            `DELETE FROM product_variants WHERE product_id = ?`,
+            [productId]
+        );
+
+        const [result] = await connection.execute<ResultSetHeader>(
+            `DELETE FROM products WHERE id = ?`,
+            [productId]
+        );
+
+        await connection.commit();
+        return result.affectedRows > 0;
+    } catch (error) {
+        await connection.rollback();
+        throw error;
+    } finally {
+        connection.release();
+    }
 }

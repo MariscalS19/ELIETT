@@ -287,7 +287,7 @@ export async function toggleProductVisibility(
     productId: number,
     isPublic: boolean
 ): Promise<ActionResponse> {
-    const updated = updateProductVisibility(productId, isPublic);
+    const updated = await updateProductVisibility(productId, isPublic);
 
     if (!updated) {
         return {
@@ -313,7 +313,7 @@ export async function toggleProductVisibility(
 export async function deleteProductAction(
     productId: number
 ): Promise<ActionResponse> {
-    const removed = deleteProduct(productId);
+    const removed = await deleteProduct(productId);
 
     if (!removed) {
         return {
