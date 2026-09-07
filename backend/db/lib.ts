@@ -7,23 +7,14 @@ import path from 'path';
 // Interface to map the rows returned by MySQL in the read queries
 interface ProductRow extends Product, RowDataPacket {}
 
-function getUploadsRoot() {
-    const isDev = process.env.NODE_ENV === 'development';
-    const devUploadPath = process.env.DEV_SHARED_UPLOADS_PATH;
-
-    if (isDev && !devUploadPath) {
-        return null;
-    }
-
-    return isDev ? devUploadPath : process.env.SHARED_UPLOADS_PATH || null;
-}
-
-function resolveStoredFilePath(imageUrl: string | null | undefined): string | null {
+function resolveStoredFilePath(
+    imageUrl: string | null | undefined
+): string | null {
     if (!imageUrl || !imageUrl.startsWith('/uploads/')) {
         return null;
     }
 
-    const rootPath = getUploadsRoot();
+    const rootPath = process.env.SHARED_UPLOADS_PATH;
     if (!rootPath) {
         return null;
     }
@@ -255,7 +246,9 @@ export async function deleteProduct(productId: number): Promise<boolean> {
         );
 
         for (const image of images) {
-            const filePath = resolveStoredFilePath(image.image_url as string | null);
+            const filePath = resolveStoredFilePath(
+                image.image_url as string | null
+            );
 
             if (!filePath) continue;
 
