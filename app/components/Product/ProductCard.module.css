@@ -1,6 +1,7 @@
 .productCard {
     display: flex;
     flex-direction: column;
+    width: 100%;
     overflow: hidden;
     border-radius: 20px;
     border: 1px solid #e2e8f0;
@@ -342,6 +343,11 @@
 .switchOff:hover,
 .closeButton:hover {
     transform: translateY(-1px);
+}
+
+.deleteButton:hover {
+    background: #ed2b2b;
+    color: #fef2f2;
 }
 
 @media (max-width: 720px) {

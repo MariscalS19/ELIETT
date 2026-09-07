@@ -9,6 +9,7 @@ type ProductCardProps = {
     onEdit: (product: Product) => void;
     onToggleVisibility: (productId: number, currentVisibility: boolean) => void;
     onDelete: (productId: number) => void;
+    priority?: boolean;
 };
 
 export default function ProductCard({
@@ -16,6 +17,7 @@ export default function ProductCard({
     onEdit,
     onToggleVisibility,
     onDelete,
+    priority = false,
 }: ProductCardProps) {
     const mainImage =
         product.images?.find((img) => img.position === 1)?.image_url ??
@@ -32,6 +34,8 @@ export default function ProductCard({
                     style={{ objectFit: 'cover' }}
                     quality={85}
                     unoptimized
+                    priority={priority}
+                    loading={priority ? 'eager' : 'lazy'}
                 />
             </div>
 

@@ -153,13 +153,14 @@ export default function InventoryOverview({
                 />
 
                 <div className={styles.productGrid}>
-                    {products.map((product) => (
+                    {products.map((product, index) => (
                         <ProductCard
                             key={product.id}
                             product={product}
                             onEdit={handleOpenEdit}
                             onToggleVisibility={handleTogglePublic}
                             onDelete={handleDelete}
+                            priority={index === 0}
                         />
                     ))}
                 </div>
