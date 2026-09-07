@@ -12,17 +12,6 @@ const MIME_TYPES: Record<string, string> = {
     '.webp': 'image/webp',
 };
 
-function getUploadsRoot() {
-    const isDev = process.env.NODE_ENV === 'development';
-    const devUploadPath = process.env.DEV_SHARED_UPLOADS_PATH;
-
-    if (isDev && !devUploadPath) {
-        return null;
-    }
-
-    return isDev ? devUploadPath : process.env.SHARED_UPLOADS_PATH || null;
-}
-
 function resolveSafePath(rootPath: string, segments: string[]) {
     const targetPath = path.resolve(rootPath, ...segments);
     const normalizedRoot = path.resolve(rootPath) + path.sep;
@@ -44,7 +33,7 @@ export async function GET(
         return new Response('Not found', { status: 404 });
     }
 
-    const rootPath = getUploadsRoot();
+    const rootPath = process.env.SHARED_UPLOADS_PATH;
     if (!rootPath) {
         return new Response('Uploads storage is not configured', {
             status: 500,
