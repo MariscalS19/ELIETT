@@ -163,6 +163,18 @@ export async function updateProduct(p: ProductFormState): Promise<Product> {
             );
         }
 
+        const [currentImages] = await connection.execute<RowDataPacket[]>(
+            `SELECT id, image_url FROM product_images WHERE product_id = ?`,
+            [productId]
+        );
+
+        const currentImageRows = currentImages as Array<{
+            id: number;
+            image_url: string | null;
+        }>;
+        const incomingImages = Array.isArray(p.images) ? p.images : [];
+        const retainedImageIds = new Set<number>();
+
         // Update variants
         for (const variant of p.inventory) {
             await connection.execute<ResultSetHeader>(
@@ -179,33 +191,52 @@ export async function updateProduct(p: ProductFormState): Promise<Product> {
             );
         }
 
-        // Update images
-        for (const img of p.images ?? []) {
-            if (img.id) {
+        // Sync images with the incoming payload so deleted images are removed.
+        for (const [index, img] of incomingImages.entries()) {
+            const position = img.position ?? index + 1;
+            const hasDatabaseId =
+                typeof img.id === 'number' && Number.isFinite(img.id);
+
+            if (hasDatabaseId) {
+                retainedImageIds.add(img.id as number);
                 await connection.execute<ResultSetHeader>(
                     `UPDATE product_images
                      SET image_url = ?, position = ?
                      WHERE product_id = ? AND id = ?`,
                     [
                         img.image_url ?? null,
-                        img.position ?? null,
+                        position,
                         productId,
-                        img.id,
+                        img.id as number,
                     ]
                 );
                 continue;
             }
 
             await connection.execute<ResultSetHeader>(
-                `UPDATE product_images
-                 SET image_url = ?, position = ?
-                 WHERE product_id = ? AND position = ?`,
-                [
-                    img.image_url ?? null,
-                    img.position ?? null,
-                    productId,
-                    img.position ?? null,
-                ]
+                `INSERT INTO product_images (product_id, image_url, position)
+                 VALUES (?, ?, ?)`,
+                [productId, img.image_url ?? null, position]
+            );
+        }
+
+        for (const imageRow of currentImageRows) {
+            if (retainedImageIds.has(imageRow.id)) {
+                continue;
+            }
+
+            const filePath = resolveStoredFilePath(imageRow.image_url);
+            if (filePath) {
+                try {
+                    await fs.unlink(filePath);
+                } catch {
+                    // Ignore missing files; the database row still needs to be removed.
+                }
+            }
+
+            await connection.execute<ResultSetHeader>(
+                `DELETE FROM product_images WHERE product_id = ? AND id = ?`,
+                [productId, imageRow.id]
             );
         }
 
