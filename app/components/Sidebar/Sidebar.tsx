@@ -8,6 +8,7 @@ import {
     LuUsers,
     LuChartBar,
     LuSettings,
+    LuHouse,
     LuChevronLeft,
     LuChevronRight,
 } from 'react-icons/lu';
@@ -87,7 +88,17 @@ export default function Sidebar() {
                         </Link>
                     ))}
                 </div>
-
+                <Link
+                    href='/'
+                    className={`${styles.navItem} ${styles.mainMenuLink}`}
+                    title='Main Page'>
+                    <span className={styles.iconWrap}>
+                        <LuHouse className={styles.svgIcon} aria-hidden />
+                    </span>
+                    {!collapsed && (
+                        <span className={styles.label}>Main Page</span>
+                    )}
+                </Link>
                 <Link
                     href='/admin/settings'
                     className={`${styles.navItem} ${styles.settingsLink}`}
