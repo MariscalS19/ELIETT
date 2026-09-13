@@ -16,7 +16,7 @@ interface FormFieldProps {
     classname?: string;
     type?: 'input' | 'textarea';
     label: string;
-    value: string;
+    value: string | number | null;
     placeholder: string;
     rows?: number;
     onChange: (e: any) => void;
@@ -47,9 +47,9 @@ const buildEmptyForm = (): ProductFormState => ({
     composition: '',
     color: '',
     is_public: true,
-    gdl_price: 0,
-    foreigner_price: 0,
-    inventory: SIZES.map((size) => ({ size, stock: 0, sku: size })),
+    gdl_price: null,
+    foreigner_price: null,
+    inventory: SIZES.map((size) => ({ size, stock: null, sku: size })),
     images: [],
 });
 
@@ -70,9 +70,18 @@ const toFormState = (product?: Product | null): ProductFormState => {
         composition: product.composition,
         color: product.color,
         is_public: product.is_public,
-        gdl_price: product.gdl_price,
-        foreigner_price: product.foreigner_price,
-        inventory: product.inventory.map((variant) => ({ ...variant })),
+        gdl_price:
+            product.gdl_price == null
+                ? null
+                : parseFloat(String(product.gdl_price)),
+        foreigner_price:
+            product.foreigner_price == null
+                ? null
+                : parseFloat(String(product.foreigner_price)),
+        inventory: product.inventory.map((variant) => ({
+            ...variant,
+            stock: variant.stock == null ? null : variant.stock,
+        })),
         images: sortImagesByPosition(product.images).map((img) => ({
             id: img.id,
             image_url: img.image_url,
@@ -91,6 +100,8 @@ function FormField({
     onChange,
     prefix,
 }: FormFieldProps) {
+    const displayValue = value == null ? '' : String(value);
+
     return (
         <label className={classname}>
             <span>{label}</span>
@@ -99,21 +110,21 @@ function FormField({
                     <div className={styles.inputWithPrefix}>
                         <span className={styles.inputPrefix}>{prefix}</span>
                         <input
-                            value={value}
+                            value={displayValue} // 👈 Usamos el valor corregido
                             onChange={onChange}
                             placeholder={placeholder}
                         />
                     </div>
                 ) : (
                     <input
-                        value={value}
+                        value={displayValue} // 👈 Usamos el valor corregido
                         onChange={onChange}
                         placeholder={placeholder}
                     />
                 )
             ) : type === 'textarea' ? (
                 <textarea
-                    value={value}
+                    value={displayValue} // 👈 Usamos el valor corregido
                     onChange={onChange}
                     rows={rows}
                     placeholder={placeholder}></textarea>
@@ -171,7 +182,7 @@ export default function ProductFormDrawer({
 
     const updateVariantStock = (
         size: ProductVariant['size'],
-        stock: number
+        stock: number | null
     ) => {
         setDraftProduct((current) => ({
             ...current,
@@ -187,6 +198,7 @@ export default function ProductFormDrawer({
 
         const normalizedInventory = draftProduct.inventory.map((variant) => ({
             ...variant,
+            stock: variant.stock ?? 0,
             sku: `${draftProduct.base_sku || 'ELIETT'}-${variant.size}`,
         }));
 
@@ -321,12 +333,14 @@ export default function ProductFormDrawer({
                             <FormField
                                 label='GDL Price'
                                 prefix='$'
-                                value={draftProduct.gdl_price.toString()}
-                                placeholder='0.00'
+                                value={draftProduct.gdl_price == null ? '' : String(draftProduct.gdl_price)}
+                                placeholder='0'
                                 onChange={(e) =>
                                     updateDraft(
                                         'gdl_price',
-                                        parseFloat(e.target.value) || 0
+                                        e.target.value === ''
+                                            ? null
+                                            : parseFloat(e.target.value)
                                     )
                                 }
                             />
@@ -334,12 +348,14 @@ export default function ProductFormDrawer({
                             <FormField
                                 label='Foreigner Price'
                                 prefix='$'
-                                value={draftProduct.foreigner_price.toString()}
-                                placeholder='0.00'
+                                value={draftProduct.foreigner_price == null ? '' : String(draftProduct.foreigner_price)}
+                                placeholder='0'
                                 onChange={(e) =>
                                     updateDraft(
                                         'foreigner_price',
-                                        parseFloat(e.target.value) || 0
+                                        e.target.value === ''
+                                            ? null
+                                            : parseFloat(e.target.value)
                                     )
                                 }
                             />
@@ -354,12 +370,14 @@ export default function ProductFormDrawer({
                                     <FormField
                                         key={size}
                                         label={`Stock ${size}`}
-                                        value={variant?.stock.toString() || '0'}
+                                        value={variant?.stock == null ? '' : String(variant.stock)}
                                         placeholder='0'
                                         onChange={(e) =>
                                             updateVariantStock(
                                                 size,
-                                                parseInt(e.target.value) || 0
+                                                e.target.value === ''
+                                                    ? null
+                                                    : parseInt(e.target.value)
                                             )
                                         }
                                     />

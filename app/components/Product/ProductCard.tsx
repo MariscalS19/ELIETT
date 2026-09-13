@@ -19,24 +19,26 @@ export default function ProductCard({
     onDelete,
     priority = false,
 }: ProductCardProps) {
-    const mainImage =
-        product.images?.find((img) => img.position === 1)?.image_url ??
-        '/mainCover.webp';
+    const mainImage = product.images?.find((img) => img.position === 1)?.image_url;
 
     return (
         <article className={styles.productCard} onClick={() => onEdit(product)}>
             <div className={styles.imageWrap}>
-                <Image
-                    src={mainImage}
-                    alt={product.name}
-                    fill
-                    sizes='(max-width: 768px) 100vw, 320px'
-                    style={{ objectFit: 'cover' }}
-                    quality={85}
-                    unoptimized
-                    priority={priority}
-                    loading={priority ? 'eager' : 'lazy'}
-                />
+                {mainImage ? (
+                    <Image
+                        src={mainImage}
+                        alt={product.name}
+                        fill
+                        sizes='(max-width: 768px) 100vw, 320px'
+                        style={{ objectFit: 'cover' }}
+                        quality={85}
+                        unoptimized
+                        priority={priority}
+                        loading={priority ? 'eager' : 'lazy'}
+                    />
+                ) : (
+                    <div />
+                )}
             </div>
 
             <div className={styles.cardBody}>

@@ -8,7 +8,7 @@
 }
 
 .drawerPanel {
-    width: min(42rem, 92vw);
+    width: min(55rem, 92vw);
     height: 100vh;
     max-height: 100vh;
     background: #ffffff;
@@ -147,7 +147,7 @@
 }
 
 .drawerField input {
-    padding: 0.8rem 0;
+    padding: 0.8rem 0.8rem;
     border: none;
 }
 
