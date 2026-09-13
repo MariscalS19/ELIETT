@@ -120,7 +120,19 @@ export async function createProduct(p: ProductFormState): Promise<Product> {
 
         const product: Product = {
             id: productId,
-            ...p,
+            base_sku: p.base_sku,
+            model: p.model,
+            name: p.name,
+            description: p.description,
+            composition: p.composition,
+            color: p.color,
+            is_public: p.is_public,
+            gdl_price: p.gdl_price ?? 0,
+            foreigner_price: p.foreigner_price ?? 0,
+            inventory: p.inventory.map((v) => ({
+                ...v,
+                stock: v.stock ?? 0,
+            })),
             images: p.images ?? [],
         };
         return product;
@@ -244,7 +256,19 @@ export async function updateProduct(p: ProductFormState): Promise<Product> {
 
         const product: Product = {
             id: productId,
-            ...p,
+            base_sku: p.base_sku,
+            model: p.model,
+            name: p.name,
+            description: p.description,
+            composition: p.composition,
+            color: p.color,
+            is_public: p.is_public,
+            gdl_price: p.gdl_price ?? 0,
+            foreigner_price: p.foreigner_price ?? 0,
+            inventory: p.inventory.map((v) => ({
+                ...v,
+                stock: v.stock ?? 0,
+            })),
             images: p.images ?? [],
         };
         return product;
