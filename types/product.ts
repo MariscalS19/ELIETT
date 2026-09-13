@@ -32,8 +32,18 @@ export interface ProductVariant {
     sku: string;
 }
 
-export type ProductFormState = Omit<Product, 'id' | 'images'> & {
+export type ProductFormState = {
     id?: number;
+    base_sku: string;
+    model: string;
+    name: string;
+    description: string;
+    composition: string;
+    color: string;
+    is_public: boolean;
+    gdl_price: number | null;
+    foreigner_price: number | null;
+    inventory: (Omit<ProductVariant, 'stock'> & { stock: number | null })[];
     images?: ProductImageInput[];
 };
 
