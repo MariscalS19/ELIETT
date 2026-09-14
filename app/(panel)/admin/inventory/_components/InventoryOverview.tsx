@@ -7,18 +7,52 @@ import {
     editProductAction,
     createProductAction,
 } from '@/backend/actions/productActions';
-import type { Product, ProductFormState } from '@/types';
+import type { Product } from '@/types';
 
-import ProductFormDrawer from '../Product/ProductFormDrawer';
-import ProductCard from '../Product/ProductCard';
-import InventoryStats from './InventoryStats';
-import styles from './inventory.module.css';
+import ProductFormDrawer from './ProductFormDrawer';
+import ProductCard from './ProductCard';
+import styles from './InventoryOverview.module.css';
 import { LuPlus } from 'react-icons/lu';
 import { sileo } from 'sileo';
 
 type InventoryOverviewProps = {
     initialProducts: Product[];
 };
+
+type InventoryStatsProps = {
+    totalProducts: number;
+    published: number;
+    hidden: number;
+    totalStock: number;
+};
+
+function InventoryStats({
+    totalProducts,
+    published,
+    hidden,
+    totalStock,
+}: InventoryStatsProps) {
+    return (
+        <div className={styles.summaryGrid}>
+            <div className={styles.summaryCard}>
+                <span>Total</span>
+                <strong>{totalProducts}</strong>
+            </div>
+            <div className={styles.summaryCard}>
+                <span>Published</span>
+                <strong>{published}</strong>
+            </div>
+            <div className={styles.summaryCard}>
+                <span>Hidden</span>
+                <strong>{hidden}</strong>
+            </div>
+            <div className={styles.summaryCard}>
+                <span>Stock</span>
+                <strong>{totalStock}</strong>
+            </div>
+        </div>
+    );
+}
 
 export default function InventoryOverview({
     initialProducts,
@@ -138,7 +172,7 @@ export default function InventoryOverview({
 
                     <button
                         type='button'
-                        className={styles.primaryButton}
+                        className={styles.addButton}
                         onClick={handleOpenCreate}>
                         <LuPlus />
                         Add product

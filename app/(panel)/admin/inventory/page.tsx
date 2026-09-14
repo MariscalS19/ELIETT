@@ -1,4 +1,4 @@
-import InventoryOverview from '@/app/components/Inventory';
+import InventoryOverview from './_components/InventoryOverview';
 import { fetchProducts } from '@/backend/actions/productActions';
 
 export default async function InventoryPage() {

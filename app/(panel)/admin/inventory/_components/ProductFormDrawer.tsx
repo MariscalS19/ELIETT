@@ -3,7 +3,7 @@
 import { useState, useEffect, SyntheticEvent } from 'react';
 import type { Product, ProductFormState, ProductVariant } from '@/types';
 import styles from './ProductFormDrawer.module.css';
-import ImagesForm from '../ImagesForm';
+import ImagesForm from './ImagesForm';
 
 type ProductFormDrawerProps = {
     isOpen: boolean;
@@ -333,7 +333,11 @@ export default function ProductFormDrawer({
                             <FormField
                                 label='GDL Price'
                                 prefix='$'
-                                value={draftProduct.gdl_price == null ? '' : String(draftProduct.gdl_price)}
+                                value={
+                                    draftProduct.gdl_price == null
+                                        ? ''
+                                        : String(draftProduct.gdl_price)
+                                }
                                 placeholder='0'
                                 onChange={(e) =>
                                     updateDraft(
@@ -348,7 +352,11 @@ export default function ProductFormDrawer({
                             <FormField
                                 label='Foreigner Price'
                                 prefix='$'
-                                value={draftProduct.foreigner_price == null ? '' : String(draftProduct.foreigner_price)}
+                                value={
+                                    draftProduct.foreigner_price == null
+                                        ? ''
+                                        : String(draftProduct.foreigner_price)
+                                }
                                 placeholder='0'
                                 onChange={(e) =>
                                     updateDraft(
@@ -370,7 +378,11 @@ export default function ProductFormDrawer({
                                     <FormField
                                         key={size}
                                         label={`Stock ${size}`}
-                                        value={variant?.stock == null ? '' : String(variant.stock)}
+                                        value={
+                                            variant?.stock == null
+                                                ? ''
+                                                : String(variant.stock)
+                                        }
                                         placeholder='0'
                                         onChange={(e) =>
                                             updateVariantStock(

@@ -1,5 +1,5 @@
 import styles from './admin.module.css';
-import Sidebar from '@/app/components/Sidebar';
+import Sidebar from '@/components/Sidebar';
 
 export default function AdminLayout({
     children,

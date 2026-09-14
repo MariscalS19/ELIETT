@@ -1,6 +1,6 @@
 import styles from './LoginPage.module.css';
 import Image from 'next/image';
-import LoginForm from '@/app/components/LoginForm';
+import LoginForm from './_components/LoginForm';
 
 export default function LoginPage() {
     return (
