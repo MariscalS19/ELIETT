@@ -110,21 +110,21 @@ function FormField({
                     <div className={styles.inputWithPrefix}>
                         <span className={styles.inputPrefix}>{prefix}</span>
                         <input
-                            value={displayValue} // 👈 Usamos el valor corregido
+                            value={displayValue}
                             onChange={onChange}
                             placeholder={placeholder}
                         />
                     </div>
                 ) : (
                     <input
-                        value={displayValue} // 👈 Usamos el valor corregido
+                        value={displayValue}
                         onChange={onChange}
                         placeholder={placeholder}
                     />
                 )
             ) : type === 'textarea' ? (
                 <textarea
-                    value={displayValue} // 👈 Usamos el valor corregido
+                    value={displayValue}
                     onChange={onChange}
                     rows={rows}
                     placeholder={placeholder}></textarea>
@@ -162,8 +162,6 @@ export default function ProductFormDrawer({
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [isOpen, onClose]);
-
-    if (!isOpen) return null;
 
     const isEditMode = Boolean(product?.id);
 
@@ -235,9 +233,15 @@ export default function ProductFormDrawer({
     };
 
     return (
-        <div className={styles.drawerOverlay} onClick={onClose}>
+        <div
+            className={`${styles.drawerOverlay} ${
+                isOpen ? styles.drawerOverlayOpen : styles.drawerOverlayClosed
+            }`}
+            onClick={onClose}>
             <aside
-                className={styles.drawerPanel}
+                className={`${styles.drawerPanel} ${
+                    isOpen ? styles.drawerPanelOpen : styles.drawerPanelClosed
+                }`}
                 role='dialog'
                 aria-modal='true'
                 aria-labelledby='drawer-title'
