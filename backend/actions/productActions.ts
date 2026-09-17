@@ -7,6 +7,7 @@ import {
     updateProduct,
     createProduct,
     updateProductVisibility,
+    getProductById,
 } from '@/backend/db/lib';
 import type { Product, ProductFormState, ProductImageInput } from '@/types';
 import fs from 'fs/promises';
@@ -262,6 +263,23 @@ export async function fetchProducts(): Promise<Product[]> {
         foreigner_price: Number(product.foreigner_price),
     }));
     return normalizedProducts;
+}
+
+/**
+ * Fetches a product by its ID.
+ * @param id The ID of the product to fetch.
+ * @returns A promise resolving to the product or null if not found.
+ */
+export async function fetchProductById(id: number): Promise<Product | null> {
+    const product = await getProductById(id);
+    if (!product) {
+        return null;
+    }
+    return {
+        ...product,
+        gdl_price: Number(product.gdl_price),
+        foreigner_price: Number(product.foreigner_price),
+    };
 }
 
 /**
