@@ -8,7 +8,7 @@ import {
     createProduct,
     updateProductVisibility,
     getProductById,
-} from '@/backend/db/lib';
+} from '@/backend/db/products';
 import type { Product, ProductFormState, ProductImageInput } from '@/types';
 import fs from 'fs/promises';
 import path from 'path';

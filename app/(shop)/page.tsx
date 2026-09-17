@@ -1,6 +1,6 @@
 import styles from './page.module.css';
 import Image from 'next/image';
-import { getPublicProducts } from '@/backend/db/lib';
+import { getPublicProducts } from '@/backend/db/products';
 import Link from 'next/link';
 
 const categoryCards = [

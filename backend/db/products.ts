@@ -1,34 +1,10 @@
-import { pool } from './db';
+import { pool } from './pool';
 import { Product, ProductFormState } from '@/types';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import fs from 'fs/promises';
-import path from 'path';
+import { deleteStoredFile } from '../helpers/fileHelper';
 
 // Interface to map the rows returned by MySQL in the read queries
 interface ProductRow extends Product, RowDataPacket {}
-
-function resolveStoredFilePath(
-    imageUrl: string | null | undefined
-): string | null {
-    if (!imageUrl || !imageUrl.startsWith('/uploads/')) {
-        return null;
-    }
-
-    const rootPath = process.env.SHARED_UPLOADS_PATH;
-    if (!rootPath) {
-        return null;
-    }
-
-    const relativePath = imageUrl.replace(/^\/uploads\//, '');
-    const resolved = path.resolve(rootPath, relativePath);
-    const normalizedRoot = path.resolve(rootPath) + path.sep;
-
-    if (!resolved.startsWith(normalizedRoot)) {
-        return null;
-    }
-
-    return resolved;
-}
 
 // Helper to build the query with JSON aggregation
 const SELECT_PRODUCTS_QUERY = `
@@ -247,14 +223,7 @@ export async function updateProduct(p: ProductFormState): Promise<Product> {
                 continue;
             }
 
-            const filePath = resolveStoredFilePath(imageRow.image_url);
-            if (filePath) {
-                try {
-                    await fs.unlink(filePath);
-                } catch {
-                    // Ignore missing files; the database row still needs to be removed.
-                }
-            }
+            deleteStoredFile(imageRow.image_url);
 
             await connection.execute<ResultSetHeader>(
                 `DELETE FROM product_images WHERE product_id = ? AND id = ?`,
@@ -311,17 +280,7 @@ export async function deleteProduct(productId: number): Promise<boolean> {
         );
 
         for (const image of images) {
-            const filePath = resolveStoredFilePath(
-                image.image_url as string | null
-            );
-
-            if (!filePath) continue;
-
-            try {
-                await fs.unlink(filePath);
-            } catch {
-                // Ignore missing files; we still want to delete the product record.
-            }
+            await deleteStoredFile(image.image_url);
         }
 
         await connection.execute<ResultSetHeader>(

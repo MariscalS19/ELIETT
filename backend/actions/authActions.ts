@@ -2,7 +2,7 @@
 import { cookies } from 'next/headers';
 import verifyAdminPassword from '@/backend/utils/verify';
 import { signJWT } from '@/backend/utils/authUtils';
-import { pool } from '@/backend/db/db';
+import { pool } from '@/backend/db/pool';
 
 const COOKIE_NAME = 'admin_session';
 const COOKIE_MAX_AGE = 336 * 60 * 60; // 336 hours in seconds | 2 weeks
