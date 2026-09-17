@@ -2,9 +2,44 @@ import { pool } from './pool';
 import { Product, ProductFormState } from '@/types';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { deleteStoredFile } from '../helpers/fileHelper';
+import { unstable_cache } from 'next/cache';
 
 // Interface to map the rows returned by MySQL in the read queries
 interface ProductRow extends Product, RowDataPacket {}
+
+const SELECT_PUBLIC_PRODUCTS_QUERY = `SELECT 
+        p.id,
+        p.name,
+        p.model,
+        p.color,
+        p.gdl_price,
+        p.foreigner_price,
+        COALESCE(
+            (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'stock', v.stock
+                    )
+                ) 
+                FROM product_variants v 
+                WHERE v.product_id = p.id
+            ), JSON_ARRAY()
+        ) AS inventory,
+        COALESCE(
+            (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'image_url', img.image_url,
+                        'position', img.position
+                    )
+                ) 
+                FROM product_images img 
+                WHERE img.product_id = p.id
+                ORDER BY img.position ASC
+            ), JSON_ARRAY()
+        ) AS images
+    FROM products p
+`;
 
 // Helper to build the query with JSON aggregation
 const SELECT_PRODUCTS_QUERY = `
@@ -41,27 +76,77 @@ const SELECT_PRODUCTS_QUERY = `
     FROM products p
 `;
 
-export async function getProducts(): Promise<Product[]> {
-    const [rows] = await pool.query<ProductRow[]>(SELECT_PRODUCTS_QUERY);
-    return rows;
+export async function fetchAdminProductsFromDB(): Promise<Product[]> {
+    try {
+        const [rows] = await pool.query<ProductRow[]>(SELECT_PRODUCTS_QUERY);
+        return rows.map((product) => ({
+            ...product,
+            gdl_price: Number(product.gdl_price),
+            foreigner_price: Number(product.foreigner_price),
+        }));
+    } catch (error) {
+        console.error('Error fetching admin products from DB:', error);
+        throw error;
+    }
 }
 
-export async function getProductById(
+export async function fetchPublicProductsFromDB(): Promise<Product[]> {
+    try {
+        const [rows] = await pool.query<ProductRow[]>(
+            `${SELECT_PUBLIC_PRODUCTS_QUERY} WHERE p.is_public = TRUE`
+        );
+        return rows.map((product) => ({
+            ...product,
+            gdl_price: Number(product.gdl_price),
+            foreigner_price: Number(product.foreigner_price),
+        }));
+    } catch (error) {
+        console.error('Error fetching public products from DB:', error);
+        throw error;
+    }
+}
+
+export const getCachedPublicProducts = unstable_cache(
+    async () => fetchPublicProductsFromDB(),
+    ['publicProducts'],
+    {
+        revalidate: 3600, // Revalidate every hour
+        tags: ['products'],
+    }
+);
+
+export async function fetchProductByIdFromDB(
     productId: number
 ): Promise<Product | null> {
-    const [rows] = await pool.query<ProductRow[]>(
-        `${SELECT_PRODUCTS_QUERY} WHERE p.id = ?`,
-        [productId]
-    );
-    return rows.length > 0 ? rows[0] : null;
+    try {
+        const [rows] = await pool.query<ProductRow[]>(
+            `${SELECT_PRODUCTS_QUERY} WHERE p.id = ? AND p.is_public = TRUE`,
+            [productId]
+        );
+        if (rows.length === 0) {
+            return null;
+        }
+        const product = rows[0];
+        return {
+            ...product,
+            gdl_price: Number(product.gdl_price),
+            foreigner_price: Number(product.foreigner_price),
+        };
+    } catch (error) {
+        console.error('Error fetching product by ID from DB:', error);
+        return null;
+    }
 }
 
-export async function getPublicProducts(): Promise<Product[]> {
-    const [rows] = await pool.query<ProductRow[]>(
-        `${SELECT_PRODUCTS_QUERY} WHERE p.is_public = TRUE`
+const getCachedProductById = (id: number) =>
+    unstable_cache(
+        async () => fetchProductByIdFromDB(id),
+        [`productById-${id}`],
+        {
+            revalidate: 3600, // Revalidate every hour
+            tags: [`product-${id}`],
+        }
     );
-    return rows;
-}
 
 export async function createProduct(p: ProductFormState): Promise<Product> {
     const connection = await pool.getConnection();

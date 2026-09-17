@@ -1,8 +1,8 @@
 import InventoryOverview from './_components/InventoryOverview';
-import { fetchProducts } from '@/backend/actions/productActions';
+import { fetchAdminProductsFromDB } from '@/backend/db/products';
 
 export default async function InventoryPage() {
-    const products = await fetchProducts();
+    const products = await fetchAdminProductsFromDB();
 
     return <InventoryOverview initialProducts={products} />;
 }

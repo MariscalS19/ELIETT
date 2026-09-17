@@ -36,3 +36,36 @@ export async function deleteStoredFile(
         // Ignore errors, as the file might not exist or be inaccessible.
     }
 }
+
+export async function uploadProductImageFile(file: File): Promise<string> {
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const baseUploadPath = process.env.SHARED_UPLOADS_PATH;
+
+    if (!baseUploadPath) {
+        throw new Error('Shared uploads path is not defined.');
+    }
+
+    const folder = 'products';
+    const targetDirectory = path.join(baseUploadPath, folder);
+
+    try {
+        await fs.access(targetDirectory);
+    } catch {
+        await fs.mkdir(targetDirectory, { recursive: true });
+    }
+
+    const safeFileName = `${
+        path
+            .basename(file.name || 'image', path.extname(file.name || ''))
+            .replace(/[^a-zA-Z0-9-_]+/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-|-$/g, '')
+            .toLowerCase() || 'product'
+    }-${Date.now()}-${Math.random().toString(36).slice(2, 8)}${path.extname(file.name || '')}`;
+
+    const destinationPath = path.join(targetDirectory, safeFileName);
+    await fs.writeFile(destinationPath, buffer);
+
+    return `/uploads/${folder}/${safeFileName}`;
+}
