@@ -6,8 +6,7 @@ import Image from 'next/image';
 import styles from './ModalPage.module.css';
 import { LuX } from 'react-icons/lu';
 
-// Número telefónico configurado para ventas
-const WHATSAPP_PHONE = '523329065442';
+const WHATSAPP_PHONE = process.env.NEXT_PUBLIC_WHATSAPP_PHONE;
 
 interface ProductMock {
     id: string;
@@ -30,7 +29,6 @@ export default function ProductModal({
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [selectedSize, setSelectedSize] = useState<string>('S');
 
-    // Simulación de datos (Sustituir por tu consulta a la BD o Server Action)
     const product: ProductMock = {
         id,
         name: 'Blazer Estructurado Premium',
@@ -59,7 +57,6 @@ export default function ProductModal({
     }, [router]);
 
     const handleWhatsAppOrder = () => {
-        // Usamos guiones y negritas nativas (*texto*) que WhatsApp reconoce en el 100% de los dispositivos
         const message = [
             `Hola ELIETT, me interesa comprar este producto:\n`,
             `🛍️ *${product.name}*`,
@@ -82,7 +79,6 @@ export default function ProductModal({
                     <LuX />
                 </button>
 
-                {/* Carrusel de Imágenes */}
                 <div className={styles.carouselContainer}>
                     <div className={styles.imageWrap}>
                         <Image
@@ -94,7 +90,6 @@ export default function ProductModal({
                         />
                     </div>
 
-                    {/* Indicadores / Dots */}
                     <div className={styles.dotsWrap}>
                         {product.images.map((_, idx) => (
                             <span
@@ -106,7 +101,6 @@ export default function ProductModal({
                     </div>
                 </div>
 
-                {/* Detalle y Scroll Inferior */}
                 <div className={styles.detailsBody}>
                     <span className={styles.modelCode}>{product.model}</span>
                     <h2 className={styles.productTitle}>{product.name}</h2>
@@ -116,10 +110,9 @@ export default function ProductModal({
 
                     <hr className={styles.divider} />
 
-                    {/* Selector de Tallas */}
                     <div className={styles.sectionBlock}>
                         <label className={styles.sectionLabel}>
-                            Talla Seleccionada: <strong>{selectedSize}</strong>
+                            Select Size: <strong>{selectedSize}</strong>
                         </label>
                         <div className={styles.sizeGrid}>
                             {product.sizes.map((size) => (
@@ -133,17 +126,15 @@ export default function ProductModal({
                         </div>
                     </div>
 
-                    {/* Descripción */}
                     <div className={styles.sectionBlock}>
                         <label className={styles.sectionLabel}>
-                            Descripción
+                            Description
                         </label>
                         <p className={styles.descriptionText}>
                             {product.description}
                         </p>
                     </div>
 
-                    {/* Acciones de Compra por WhatsApp */}
                     <div className={styles.actionBlock}>
                         <button
                             className={styles.whatsappBtn}
@@ -155,7 +146,7 @@ export default function ProductModal({
                                 fill='currentColor'>
                                 <path d='M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z' />
                             </svg>
-                            Ordenar por WhatsApp
+                            Order via WhatsApp
                         </button>
                     </div>
                 </div>
