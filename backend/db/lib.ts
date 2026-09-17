@@ -70,6 +70,16 @@ export async function getProducts(): Promise<Product[]> {
     return rows;
 }
 
+export async function getProductById(
+    productId: number
+): Promise<Product | null> {
+    const [rows] = await pool.query<ProductRow[]>(
+        `${SELECT_PRODUCTS_QUERY} WHERE p.id = ?`,
+        [productId]
+    );
+    return rows.length > 0 ? rows[0] : null;
+}
+
 export async function getPublicProducts(): Promise<Product[]> {
     const [rows] = await pool.query<ProductRow[]>(
         `${SELECT_PRODUCTS_QUERY} WHERE p.is_public = TRUE`
