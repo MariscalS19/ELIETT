@@ -1,6 +1,7 @@
 import styles from './page.module.css';
 import Image from 'next/image';
 import { getPublicProducts } from '@/backend/db/lib';
+import Link from 'next/link';
 
 const categoryCards = [
     {
@@ -131,46 +132,49 @@ export default async function Home() {
                                 pattern[index % pattern.length];
 
                             return (
-                                <article
+                                <Link
+                                    href={`/product/${product.id}`}
                                     key={product.id}
                                     className={`${styles.productCard} ${cardClassName}`}>
-                                    <div className={styles.cardImageWrap}>
-                                        <Image
-                                            className={styles.cardImage}
-                                            src={image}
-                                            alt={`Image of ${product.name}`}
-                                            fill
-                                            unoptimized
-                                            sizes='(max-width: 760px) 100vw, 50vw'
-                                            quality={85}
-                                        />
-                                        <span
-                                            className={
-                                                productStock > 0
-                                                    ? styles.inStockBadge
-                                                    : styles.soldOutBadge
-                                            }>
-                                            {productStock > 0
-                                                ? 'In stock'
-                                                : 'Sold out'}
-                                        </span>
-                                    </div>
-
-                                    <div className={styles.cardBody}>
-                                        <p className={styles.model}>
-                                            {product.model}
-                                        </p>
-                                        <h3>{product.name}</h3>
-                                        <div className={styles.cardMeta}>
-                                            <span>{product.color}</span>
-                                            <span>
-                                                {currencyFormatter.format(
-                                                    product.gdl_price
-                                                )}
+                                    <article>
+                                        <div className={styles.cardImageWrap}>
+                                            <Image
+                                                className={styles.cardImage}
+                                                src={image}
+                                                alt={`Image of ${product.name}`}
+                                                fill
+                                                unoptimized
+                                                sizes='(max-width: 760px) 100vw, 50vw'
+                                                quality={85}
+                                            />
+                                            <span
+                                                className={
+                                                    productStock > 0
+                                                        ? styles.inStockBadge
+                                                        : styles.soldOutBadge
+                                                }>
+                                                {productStock > 0
+                                                    ? 'In stock'
+                                                    : 'Sold out'}
                                             </span>
                                         </div>
-                                    </div>
-                                </article>
+
+                                        <div className={styles.cardBody}>
+                                            <p className={styles.model}>
+                                                {product.model}
+                                            </p>
+                                            <h3>{product.name}</h3>
+                                            <div className={styles.cardMeta}>
+                                                <span>{product.color}</span>
+                                                <span>
+                                                    {currencyFormatter.format(
+                                                        product.gdl_price
+                                                    )}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </Link>
                             );
                         })}
                     </div>
