@@ -1,6 +1,6 @@
 import styles from './page.module.css';
 import Image from 'next/image';
-import { getPublicProducts } from '@/backend/db/products';
+import { getCachedPublicProducts } from '@/backend/db/products';
 import Link from 'next/link';
 
 const categoryCards = [
@@ -34,7 +34,7 @@ const currencyFormatter = new Intl.NumberFormat('es-MX', {
 });
 
 export default async function Home() {
-    const products = await getPublicProducts();
+    const products = await getCachedPublicProducts();
     const hasProducts = products.length > 0;
 
     return (
@@ -133,7 +133,7 @@ export default async function Home() {
 
                             return (
                                 <Link
-                                    href={`/product/${product.id}`}
+                                    href={`/product/${product.name.toLowerCase().replace(/\s+/g, '-')}`}
                                     key={product.id}
                                     className={`${styles.productCard} ${cardClassName}`}>
                                     <article>
