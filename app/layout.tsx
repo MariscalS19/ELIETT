@@ -36,7 +36,8 @@ export default function RootLayout({
     return (
         <html
             lang='en'
-            className={` ${guidaMono.variable} ${guidaMonoSharp.variable}`}>
+            className={` ${guidaMono.variable} ${guidaMonoSharp.variable}`}
+            data-scroll-behavior='smooth'>
             <head>
                 <meta charSet='utf-8' />
             </head>
