@@ -269,6 +269,8 @@ export async function updateProductVisibility(
 }
 
 export async function deleteProduct(productId: number): Promise<boolean> {
+    //DB has ON DELETE CASCADE for product_variants and product_images, so we only need to delete the product itself.
+    //However, we need to delete the images from the filesystem first.
     const connection = await pool.getConnection();
 
     try {
@@ -282,16 +284,6 @@ export async function deleteProduct(productId: number): Promise<boolean> {
         for (const image of images) {
             await deleteStoredFile(image.image_url);
         }
-
-        await connection.execute<ResultSetHeader>(
-            `DELETE FROM product_images WHERE product_id = ?`,
-            [productId]
-        );
-
-        await connection.execute<ResultSetHeader>(
-            `DELETE FROM product_variants WHERE product_id = ?`,
-            [productId]
-        );
 
         const [result] = await connection.execute<ResultSetHeader>(
             `DELETE FROM products WHERE id = ?`,
