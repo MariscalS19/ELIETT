@@ -1,0 +1,220 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.card {
+    background: #0f0f0f;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    width: clamp(20rem, 90vw, 40rem);
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.25)
+}
+
+.closeButton {
+    position: sticky;
+    top: 1rem;
+    right: 1rem;
+    align-self: flex-end;
+    margin-bottom: -34px;
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+}
+
+.carouselContainer {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background-color: #050505;
+    flex-shrink: 0;
+}
+
+.imageWrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.carouselImage {
+    object-fit: cover;
+    object-position: center;
+}
+
+.dotsWrap {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 5;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.activeDot {
+    background: #ffffff;
+    width: 20px;
+    border-radius: 10px;
+}
+
+.detailsBody {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.modelCode {
+    font-size: 0.7rem;
+    letter-spacing: 0.15rem;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.productTitle {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+.priceTag {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.divider {
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0.4rem 0;
+}
+
+.sectionBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sectionLabel {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.sizeGrid {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.sizeBtn {
+    flex: 1;
+    padding: 0.6rem 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.selectedSize {
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+}
+
+.descriptionText {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.actionBlock {
+    margin-top: 1rem;
+}
+
+.whatsappBtn {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 12px;
+    border: none;
+    background: #25d366;
+    color: #000000;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.whatsappBtn:hover {
+    background: #20bd5a;
+    transform: translateY(-1px);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

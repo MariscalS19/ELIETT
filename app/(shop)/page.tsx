@@ -133,7 +133,7 @@ export default async function Home() {
 
                             return (
                                 <Link
-                                    href={`/product/${product.name.toLowerCase().replace(/\s+/g, '-')}`}
+                                    href={`/product/${product.name.toLowerCase().replace(/\s+/g, '-')}-${product.id}`}
                                     key={product.id}
                                     className={`${styles.productCard} ${cardClassName}`}>
                                     <article>
