@@ -138,7 +138,7 @@ export async function fetchProductByIdFromDB(
     }
 }
 
-const getCachedProductById = (id: number) =>
+export const getCachedProductById = (id: number) =>
     unstable_cache(
         async () => fetchProductByIdFromDB(id),
         [`productById-${id}`],
@@ -146,7 +146,7 @@ const getCachedProductById = (id: number) =>
             revalidate: 3600, // Revalidate every hour
             tags: [`product-${id}`],
         }
-    );
+    )();
 
 export async function createProduct(p: ProductFormState): Promise<Product> {
     const connection = await pool.getConnection();
