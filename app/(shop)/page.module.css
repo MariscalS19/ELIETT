@@ -28,7 +28,7 @@
     width: 100%;
     object-fit: cover;
     object-position: center;
-    /* object-position: 0 -2em; */
+    animation: fadeEffect 0.9s ease-in-out forwards;
     transform: scale(1.02);
 }
 
@@ -380,5 +380,17 @@
     .cardDefault,
     .cardTall {
         grid-column: span 1;
+    }
+}
+
+@keyframes fadeEffect {
+    from {
+        opacity: 0.4;
+        transform: scale(1.02);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
     }
 }
