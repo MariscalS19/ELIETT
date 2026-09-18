@@ -1,0 +1,31 @@
+.sizeGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.sizeBadge {
+    color: inherit;
+    padding: 0.5rem 1rem;
+    border: 1px solid #27272a;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    background-color: #09090b;
+}
+
+.sizeBadge:hover {
+    background-color: #27272a;
+    cursor: pointer;
+}
+
+.sizeBadge:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.sizeBadgeActive {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border-color: #ffffff !important;
+    font-weight: 600;
+}
