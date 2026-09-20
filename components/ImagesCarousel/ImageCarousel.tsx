@@ -1,6 +1,6 @@
 'use client';
 import { ProductImage } from '@/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import styles from './ImageCarousel.module.css';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
@@ -16,6 +16,19 @@ export default function ImageCarrousel({
 }: ImageCarrouselProps) {
     const imagesLength = images.length;
     const [currentImgIdx, setCurrentImgIdx] = useState(0);
+
+    // Preload next and previous images for smoother transitions
+    useEffect(() => {
+        if (!images || imagesLength <= 1) return;
+
+        const nextIndex = (currentImgIdx + 1) % imagesLength;
+        const prevIndex = (currentImgIdx + imagesLength - 1) % imagesLength;
+
+        [nextIndex, prevIndex].forEach((idx) => {
+            const img = new window.Image();
+            img.src = images[idx].image_url;
+        });
+    }, [currentImgIdx, images, imagesLength]);
 
     const handleNextimage = () => {
         setCurrentImgIdx((prevIdx) => (prevIdx + 1) % imagesLength);
