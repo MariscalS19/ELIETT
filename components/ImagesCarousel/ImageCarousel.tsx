@@ -2,7 +2,7 @@
 import { ProductImage } from '@/types';
 import { useState } from 'react';
 import Image from 'next/image';
-import styles from './ImageCarrousel.module.css';
+import styles from './ImageCarousel.module.css';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
 interface ImageCarrouselProps {
@@ -26,14 +26,27 @@ export default function ImageCarrousel({
             (prevIdx) => (prevIdx + imagesLength - 1) % imagesLength
         );
     };
+
     if (!images || imagesLength === 0) return null;
+
+    const currentImg = images[currentImgIdx];
 
     return (
         <div className={styles.carrouselContainer}>
             <div className={styles.productImageWrap}>
                 <Image
-                    key={images[currentImgIdx].id}
-                    src={images[currentImgIdx].image_url}
+                    key={`bg-${currentImg.id}`}
+                    src={currentImg.image_url}
+                    alt=''
+                    fill
+                    unoptimized
+                    className={styles.backgroundImage}
+                    aria-hidden='true'
+                />
+
+                <Image
+                    key={currentImg.id}
+                    src={currentImg.image_url}
                     alt={productName}
                     fill
                     priority
@@ -45,11 +58,13 @@ export default function ImageCarrousel({
             {imagesLength > 1 && (
                 <>
                     <button
+                        type='button'
                         className={styles.prevButton}
                         onClick={handlePreviousImage}>
                         <LuChevronLeft />
                     </button>
                     <button
+                        type='button'
                         className={styles.nextButton}
                         onClick={handleNextimage}>
                         <LuChevronRight />

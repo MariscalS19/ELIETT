@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import styles from '../_components/SizeSelector.module.css';
+import styles from './SizeSelector.module.css';
 import { ProductVariant } from '@/types';
 
 interface SizeSelectorProps {
@@ -29,4 +29,31 @@ export default function SizeSelector({ inventory }: SizeSelectorProps) {
             })}
         </div>
     );
+}
+
+{
+    /* <div className={styles.sizeGrid}> */
+}
+{
+    /* {product.inventory.map((variant) => { */
+}
+// const isOutOfStock = variant.stock <= 0;
+// return (
+// <button
+// key={variant.sku || variant.size}
+// disabled={isOutOfStock}
+// className={`${styles.sizeBtn} ${selectedSize === variant.size ? styles.selectedSize : ''} ${isOutOfStock ? styles.disabledSize : ''}`}
+// onClick={() =>
+// setSelectedSize(variant.size)
+// }>
+{
+    /* {variant.size} */
+}
+{
+    /* </button> */
+}
+// );
+// })}
+{
+    /* </div> */
 }

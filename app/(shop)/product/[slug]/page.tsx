@@ -1,6 +1,6 @@
 import { getCachedProductById } from '@/backend/db/products';
-import ImageCarrousel from '../_components/ImageCarrousel';
-import SizeSelector from '../_components/SizeSelector';
+import ImageCarrousel from '@/components/ImagesCarousel';
+import SizeSelector from '@/components/SizeSelector';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import styles from './ProductPage.module.css';
