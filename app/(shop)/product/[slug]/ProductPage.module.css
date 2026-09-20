@@ -110,6 +110,7 @@
 }
 
 .whatsappBtn {
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -119,7 +120,7 @@
     background-color: #25d366;
     color: white;
     font-weight: 600;
-    font-size: 1.125em;
+    font-size: 1em;
     border-radius: 8px;
     text-decoration: none;
     transition: background-color 0.2s;
