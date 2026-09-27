@@ -1,59 +1,36 @@
-'use client';
-import { useState } from 'react';
 import styles from './SizeSelector.module.css';
 import { ProductVariant } from '@/types';
 
 interface SizeSelectorProps {
     inventory: ProductVariant[];
+    selectedSize: string;
+    onSelectSize: (size: string) => void;
 }
 
-export default function SizeSelector({ inventory }: SizeSelectorProps) {
-    const [selectedSizeId, setSelectedSizeId] = useState<number | undefined>(
-        undefined
-    );
-
+export default function SizeSelector({
+    inventory,
+    selectedSize,
+    onSelectSize,
+}: SizeSelectorProps) {
     return (
         <div className={styles.sizeGrid}>
             {inventory.map((variant) => {
-                const isSelected = selectedSizeId === variant.id;
+                const isSelected = selectedSize === variant.size;
+                const isOutOfStock = variant.stock === 0;
+
                 return (
                     <button
-                        key={variant.id}
+                        key={variant.id || variant.size}
                         type='button'
-                        className={`${styles.sizeBadge} ${isSelected ? styles.sizeBadgeActive : ''}`}
-                        disabled={variant.stock === 0}
-                        onClick={() => setSelectedSizeId(variant.id)}>
+                        className={`${styles.sizeBadge} ${
+                            isSelected ? styles.sizeBadgeActive : ''
+                        }`}
+                        disabled={isOutOfStock}
+                        onClick={() => onSelectSize(variant.size)}>
                         {variant.size}
                     </button>
                 );
             })}
         </div>
     );
-}
-
-{
-    /* <div className={styles.sizeGrid}> */
-}
-{
-    /* {product.inventory.map((variant) => { */
-}
-// const isOutOfStock = variant.stock <= 0;
-// return (
-// <button
-// key={variant.sku || variant.size}
-// disabled={isOutOfStock}
-// className={`${styles.sizeBtn} ${selectedSize === variant.size ? styles.selectedSize : ''} ${isOutOfStock ? styles.disabledSize : ''}`}
-// onClick={() =>
-// setSelectedSize(variant.size)
-// }>
-{
-    /* {variant.size} */
-}
-{
-    /* </button> */
-}
-// );
-// })}
-{
-    /* </div> */
 }
