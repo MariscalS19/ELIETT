@@ -3,22 +3,28 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './ProductModal.module.css';
-import { LuX } from 'react-icons/lu';
+import { LuX, LuShoppingBag } from 'react-icons/lu';
 import { FaWhatsapp } from 'react-icons/fa';
 import { Product } from '@/types/product';
-
 import ImageCarrousel from '@/components/ImagesCarousel';
 import SizeSelector from '@/components/SizeSelector/SizeSelector';
+import { useCart } from '@/app/(shop)/_context/CartContext';
 
 const WHATSAPP_PHONE = process.env.NEXT_PUBLIC_WHATSAPP_PHONE;
 
 export default function ProductModalClient({ product }: { product: Product }) {
     const router = useRouter();
+    const { addToCart } = useCart();
 
     const availableVariant = product.inventory.find((v) => v.stock > 0);
     const [selectedSize, setSelectedSize] = useState<string>(
         availableVariant?.size || product.inventory[0]?.size || 'S'
     );
+
+    const mainImage =
+        product.images.find((item) => item.position === 1)?.image_url ||
+        product.images[0]?.image_url ||
+        '';
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -28,18 +34,31 @@ export default function ProductModalClient({ product }: { product: Product }) {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [router]);
 
-    const handleWhatsAppOrder = () => {
+    const handleSingleWhatsAppOrder = () => {
         const message = [
-            `Helllo ELIETT, i'm interested in buying this product:\n`,
+            `Hello ELIETT, I'm interested in buying this product:\n`,
             `*${product.name}*`,
             `- *Model:* ${product.model}`,
             `- *Size:* ${selectedSize}`,
-            `- *Price:* $${product.gdl_price} MXN\n`,
+            `- *Price:* $${product.gdl_price.toLocaleString('es-MX')} MXN\n`,
             `Please let me know the next steps to complete the purchase. Thank you!`,
         ].join('\n');
 
         const url = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
         window.open(url, '_blank');
+    };
+
+    const handleAddToCart = () => {
+        addToCart({
+            id: product.id,
+            name: product.name,
+            model: product.model,
+            price: product.gdl_price,
+            image: mainImage,
+            size: selectedSize,
+            color: product.color,
+            quantity: 1,
+        });
     };
 
     return (
@@ -71,7 +90,11 @@ export default function ProductModalClient({ product }: { product: Product }) {
                         <label className={styles.sectionLabel}>
                             Select Size: <strong>{selectedSize}</strong>
                         </label>
-                        <SizeSelector inventory={product.inventory} />
+                        <SizeSelector
+                            inventory={product.inventory}
+                            selectedSize={selectedSize}
+                            onSelectSize={setSelectedSize}
+                        />
                     </div>
 
                     <div className={styles.sectionBlock}>
@@ -85,10 +108,19 @@ export default function ProductModalClient({ product }: { product: Product }) {
 
                     <div className={styles.actionBlock}>
                         <button
+                            type='button'
+                            className={styles.cartBtn}
+                            onClick={handleAddToCart}>
+                            <LuShoppingBag />
+                            Add to Bag
+                        </button>
+
+                        <button
+                            type='button'
                             className={styles.whatsappBtn}
-                            onClick={handleWhatsAppOrder}>
+                            onClick={handleSingleWhatsAppOrder}>
                             <FaWhatsapp />
-                            Order via WhatsApp
+                            Order now via WhatsApp
                         </button>
                     </div>
                 </div>

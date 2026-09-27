@@ -1,5 +1,5 @@
 import Navbar from '@/components/Navbar';
-
+import { CartProvider } from './_context/CartContext';
 export default function ShopLayout({
     children,
     modal,
@@ -8,10 +8,10 @@ export default function ShopLayout({
     modal: React.ReactNode;
 }>) {
     return (
-        <>
+        <CartProvider>
             <Navbar />
             <main> {children} </main>
             {modal}
-        </>
+        </CartProvider>
     );
 }
