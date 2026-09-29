@@ -5,6 +5,7 @@ import styles from './CartDrawer.module.css';
 import { LuX, LuTrash2, LuShoppingCart } from 'react-icons/lu';
 import { FaWhatsapp } from 'react-icons/fa';
 import { useEffect } from 'react';
+import Image from 'next/image';
 
 export default function CartDrawer() {
     const {
@@ -44,7 +45,8 @@ export default function CartDrawer() {
                     <button
                         type='button'
                         onClick={closeCart}
-                        className={styles.closeButton}>
+                        className={styles.closeButton}
+                        aria-label='Close cart'>
                         <LuX size={20} />
                     </button>
                 </header>
@@ -58,45 +60,69 @@ export default function CartDrawer() {
                                 <li
                                     key={`${item.id}-${item.size}`}
                                     className={styles.item}>
-                                    <div>
-                                        <h4>{item.name}</h4>
-                                        <p>
-                                            Size: {item.size} | $
-                                            {item.price.toLocaleString('es-MX')}{' '}
-                                            MXN
-                                        </p>
+                                    <div className={styles.imageWrapper}>
+                                        <Image
+                                            src={item.image}
+                                            alt={item.name}
+                                            fill
+                                            sizes='80px'
+                                            style={{ objectFit: 'cover' }}
+                                        />
                                     </div>
-                                    <div className={styles.actions}>
-                                        <button
-                                            onClick={() =>
-                                                updateQuantity(
-                                                    item.id,
-                                                    item.size,
-                                                    item.quantity - 1
-                                                )
-                                            }>
-                                            -
-                                        </button>
-                                        <span>{item.quantity}</span>
-                                        <button
-                                            onClick={() =>
-                                                updateQuantity(
-                                                    item.id,
-                                                    item.size,
-                                                    item.quantity + 1
-                                                )
-                                            }>
-                                            +
-                                        </button>
-                                        <button
-                                            onClick={() =>
-                                                removeFromCart(
-                                                    item.id,
-                                                    item.size
-                                                )
-                                            }>
-                                            <LuTrash2 size={16} />
-                                        </button>
+                                    <div className={styles.itemDetails}>
+                                        <h4>{item.name}</h4>
+                                        <div className={styles.itemMeta}>
+                                            <span>Size: {item.size}</span>
+                                            <span>•</span>
+                                            <span className={styles.itemPrice}>
+                                                $
+                                                {item.price.toLocaleString(
+                                                    'es-MX'
+                                                )}{' '}
+                                                MXN
+                                            </span>
+                                        </div>
+                                        <div className={styles.actions}>
+                                            <button
+                                                type='button'
+                                                className={styles.qtyButton}
+                                                onClick={() =>
+                                                    updateQuantity(
+                                                        item.id,
+                                                        item.size,
+                                                        item.quantity - 1
+                                                    )
+                                                }>
+                                                -
+                                            </button>
+                                            <span className={styles.qtyCount}>
+                                                {item.quantity}
+                                            </span>
+                                            <button
+                                                type='button'
+                                                className={styles.qtyButton}
+                                                onClick={() =>
+                                                    updateQuantity(
+                                                        item.id,
+                                                        item.size,
+                                                        item.quantity + 1
+                                                    )
+                                                }>
+                                                +
+                                            </button>
+                                            <button
+                                                type='button'
+                                                className={styles.deleteButton}
+                                                title='Eliminar producto'
+                                                onClick={() =>
+                                                    removeFromCart(
+                                                        item.id,
+                                                        item.size
+                                                    )
+                                                }>
+                                                <LuTrash2 size={16} />
+                                            </button>
+                                        </div>
                                     </div>
                                 </li>
                             ))}
@@ -116,7 +142,7 @@ export default function CartDrawer() {
                             type='button'
                             className={styles.checkoutButton}
                             onClick={sendCartToWhatsApp}>
-                            <FaWhatsapp />
+                            <FaWhatsapp size={18} />
                             Order via WhatsApp
                         </button>
                     </footer>
