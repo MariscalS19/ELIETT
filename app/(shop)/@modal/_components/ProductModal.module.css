@@ -9,6 +9,7 @@
     z-index: 1000;
     padding: 1rem;
     animation: fadeIn 0.2s ease-out;
+    overscroll-behavior: contain;
 }
 
 .card {

@@ -27,6 +27,14 @@ export default function ProductModalClient({ product }: { product: Product }) {
         '';
 
     useEffect(() => {
+        document.body.style.overflow = 'hidden';
+
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, []);
+
+    useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') router.back();
         };
