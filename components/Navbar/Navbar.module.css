@@ -1,14 +1,15 @@
 .navbar {
     width: 100%;
     max-width: 100%;
-    min-height: var(--navbar-height);
+    min-height: var(--navbar-height, 3.5rem);
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 100;
     box-sizing: border-box;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    padding: 0.8rem 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
     background-color: rgba(255, 255, 255, 0.989);
     color: black;
     border-bottom: 2px solid rgba(131, 108, 108, 0.2);
@@ -16,9 +17,10 @@
 
 .links {
     display: flex;
-    gap: 1rem;
-    justify-content: center;
+    gap: 0.8rem;
     align-items: center;
+    flex: 1;
+    justify-content: flex-start;
 }
 
 .link {
@@ -31,8 +33,10 @@
     text-decoration: none;
     font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.2rem;
-    padding: 0 1rem;
+    letter-spacing: 0.15rem;
+    padding: 0.4rem 0.6rem;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .link:visited {
@@ -42,37 +46,41 @@
 .link:hover {
     color: white;
     background-color: rgb(0, 0, 0);
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 .logo_container {
-    position: relative;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     aspect-ratio: 1081/146;
-    width: 160px;
-    margin: auto auto;
+    width: clamp(110px, 35vw, 150px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
 }
 
 .icons {
     display: flex;
-    gap: 1.2rem;
-    justify-content: center;
+    gap: 0.6rem;
     align-items: center;
     margin-left: auto;
+    z-index: 3;
 }
 
 .insta_button,
 .cart_button {
     display: inline-flex;
-    width: 1.9rem;
-    height: 1.9rem;
+    width: 2rem;
+    height: 2rem;
     justify-content: center;
     align-items: center;
-    justify-self: end;
     padding: 0.1rem;
     color: #111111;
     background: rgba(17, 17, 17, 0.04);
     border: 1px solid rgba(17, 17, 17, 0.08);
-    border-radius: 0.8rem;
+    border-radius: 0.6rem;
     box-shadow: 0 4px 10px rgba(17, 17, 17, 0.08);
     box-sizing: border-box;
     text-decoration: none;
@@ -91,8 +99,8 @@
 
 .insta_icon,
 .cart_icon {
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 1.1rem;
+    height: 1.1rem;
     display: block;
     stroke: currentColor;
     stroke-width: 1.8px;
@@ -109,12 +117,6 @@
     transform: translateY(-1px);
 }
 
-.insta_button:focus-visible,
-.cart_button:focus-visible {
-    outline: 2px solid rgba(17, 17, 17, 0.25);
-    outline-offset: 2px;
-}
-
 .cart_button:focus:not(:focus-visible) {
     background: rgba(17, 17, 17, 0.04);
     color: #111111;
@@ -122,13 +124,13 @@
 
 .cart_count {
     position: absolute;
-    top: -0.4rem;
-    right: -0.4rem;
-    width: 1.2rem;
-    height: 1.2rem;
+    top: -0.35rem;
+    right: -0.35rem;
+    width: 1.1rem;
+    height: 1.1rem;
     background-color: #ff0000;
     color: #ffffff;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: bold;
     border-radius: 50%;
     display: flex;
@@ -136,4 +138,28 @@
     justify-content: center;
     line-height: 1;
     pointer-events: none;
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0.5rem 0.6rem;
+    }
+
+    .links {
+        display: none;
+    }
+
+    .logo_container {
+        width: 110px;
+    }
+
+    .icons {
+        gap: 0.4rem;
+    }
+
+    .insta_button,
+    .cart_button {
+        width: 1.8rem;
+        height: 1.8rem;
+    }
 }

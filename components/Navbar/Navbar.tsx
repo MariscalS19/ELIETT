@@ -26,7 +26,8 @@ function Navbar() {
                 <button
                     type='button'
                     onClick={openCart}
-                    className={styles.cart_button}>
+                    className={styles.cart_button}
+                    aria-label='Open cart'>
                     <LuShoppingCart className={styles.cart_icon} />
                     {totalItems > 0 && (
                         <span className={styles.cart_count}>{totalItems}</span>
@@ -36,7 +37,8 @@ function Navbar() {
                     href='https://www.instagram.com/the.eliett'
                     target='_blank'
                     rel='noopener noreferrer'
-                    className={styles.insta_button}>
+                    className={styles.insta_button}
+                    aria-label='Instagram'>
                     <LuInstagram className={styles.insta_icon} />
                 </a>
             </div>
