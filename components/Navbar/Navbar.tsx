@@ -1,12 +1,13 @@
 'use client';
+
 import styles from './Navbar.module.css';
 import Image from 'next/image';
-import { LuInstagram } from 'react-icons/lu';
-import { LuShoppingCart } from 'react-icons/lu';
+import { LuInstagram, LuShoppingCart } from 'react-icons/lu';
 import { useCart } from '@/app/(shop)/_context/CartContext';
 
 function Navbar() {
-    const { totalItems } = useCart();
+    const { totalItems, openCart } = useCart();
+
     return (
         <nav className={styles.navbar}>
             <div className={styles.links}></div>
@@ -14,7 +15,7 @@ function Navbar() {
             <div className={styles.logo_container}>
                 <Image
                     src='/eliett_black_logo.svg'
-                    alt='ELLIET logo'
+                    alt='ELIETT logo'
                     fill
                     unoptimized
                     priority
@@ -22,12 +23,15 @@ function Navbar() {
             </div>
 
             <div className={styles.icons}>
-                <a href='/cart' className={styles.cart_button}>
+                <button
+                    type='button'
+                    onClick={openCart}
+                    className={styles.cart_button}>
                     <LuShoppingCart className={styles.cart_icon} />
                     {totalItems > 0 && (
                         <span className={styles.cart_count}>{totalItems}</span>
                     )}
-                </a>
+                </button>
                 <a
                     href='https://www.instagram.com/the.eliett'
                     target='_blank'

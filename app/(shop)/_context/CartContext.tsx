@@ -33,6 +33,10 @@ interface CartContextType {
     totalItems: number;
     totalPrice: number;
     sendCartToWhatsApp: () => void;
+    isCartOpen: boolean;
+    openCart: () => void;
+    closeCart: () => void;
+    toggleCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -40,6 +44,11 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
     const [cart, setCart] = useState<CartItem[]>([]);
     const [isHydrated, setIsHydrated] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false);
+
+    const openCart = useCallback(() => setIsCartOpen(true), []);
+    const closeCart = useCallback(() => setIsCartOpen(false), []);
+    const toggleCart = useCallback(() => setIsCartOpen((prev) => !prev), []);
 
     useEffect(() => {
         try {
@@ -82,12 +91,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
             return [...prevCart, newItem];
         });
+        setIsCartOpen(true);
     }, []);
 
     const updateQuantity = useCallback(
         (id: number, size: string, quantity: number) => {
             if (quantity <= 0) {
-                removeFromCart(id, size);
+                setCart((prevCart) =>
+                    prevCart.filter(
+                        (item) => !(item.id === id && item.size === size)
+                    )
+                );
                 return;
             }
 
@@ -131,7 +145,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         const itemsList = cart
             .map(
                 (item) =>
-                    `• *${item.name}* (${item.model}) - Size: ${item.size} x${item.quantity} -> $${(
+                    `• *${item.name}* (${item.model}) - Size: ${item.size} x ${item.quantity} --> $${(
                         item.price * item.quantity
                     ).toLocaleString('es-MX')} MXN`
             )
@@ -159,6 +173,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
             totalItems,
             totalPrice,
             sendCartToWhatsApp,
+            isCartOpen,
+            openCart,
+            closeCart,
+            toggleCart,
         }),
         [
             cart,
@@ -169,6 +187,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
             totalItems,
             totalPrice,
             sendCartToWhatsApp,
+            isCartOpen,
+            openCart,
+            closeCart,
+            toggleCart,
         ]
     );
 

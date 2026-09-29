@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar';
 import { CartProvider } from './_context/CartContext';
+import CartDrawer from '@/components/CartDrawer';
 export default function ShopLayout({
     children,
     modal,
@@ -12,6 +13,7 @@ export default function ShopLayout({
             <Navbar />
             <main> {children} </main>
             {modal}
+            <CartDrawer />
         </CartProvider>
     );
 }
