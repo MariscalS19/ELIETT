@@ -52,6 +52,14 @@
     margin: auto auto;
 }
 
+.icons {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+}
+
 .insta_button,
 .cart_button {
     display: inline-flex;
@@ -68,11 +76,17 @@
     box-shadow: 0 4px 10px rgba(17, 17, 17, 0.08);
     box-sizing: border-box;
     text-decoration: none;
+    cursor: pointer;
+    outline: none;
     transition:
         color 0.2s ease,
         background 0.25s ease,
         transform 0.2s ease,
         box-shadow 0.2s ease;
+}
+
+.cart_button {
+    position: relative;
 }
 
 .insta_icon,
@@ -90,15 +104,9 @@
 .cart_button:hover,
 .cart_button:focus-visible {
     background: linear-gradient(135deg, #111111 0%, #3a2d2d 100%);
+    color: #ffffff;
     box-shadow: 0 8px 18px rgba(17, 17, 17, 0.18);
     transform: translateY(-1px);
-}
-
-.insta_button:link,
-.insta_button:visited,
-.cart_button:link,
-.cart_button:visited {
-    background: rgba(107, 42, 42, 0.04);
 }
 
 .insta_button:focus-visible,
@@ -107,16 +115,9 @@
     outline-offset: 2px;
 }
 
-.icons {
-    display: flex;
-    gap: 1.2rem;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-}
-
-.cart_button {
-    position: relative;
+.cart_button:focus:not(:focus-visible) {
+    background: rgba(17, 17, 17, 0.04);
+    color: #111111;
 }
 
 .cart_count {
@@ -133,4 +134,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    line-height: 1;
+    pointer-events: none;
 }
