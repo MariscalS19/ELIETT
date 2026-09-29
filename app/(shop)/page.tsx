@@ -63,7 +63,7 @@ export default async function Home() {
                 </div>
             </section>
 
-            <section id='categories' className={styles.categorySection}>
+            {/* <section id='categories' className={styles.categorySection}>
                 <div className={styles.sectionIntro}>
                     <p>Categories</p>
                     <h2>Shop by mood</h2>
@@ -92,7 +92,7 @@ export default async function Home() {
                         </a>
                     ))}
                 </div>
-            </section>
+            </section> */}
 
             <section id='collection' className={styles.collectionSection}>
                 <div className={styles.sectionIntro}>
