@@ -2,7 +2,7 @@
 
 import { useCart } from '@/app/(shop)/_context/CartContext';
 import styles from './CartDrawer.module.css';
-import { LuX, LuTrash2 } from 'react-icons/lu';
+import { LuX, LuTrash2, LuShoppingCart } from 'react-icons/lu';
 import { FaWhatsapp } from 'react-icons/fa';
 import { useEffect } from 'react';
 
@@ -37,7 +37,10 @@ export default function CartDrawer() {
                 className={styles.drawer}
                 onClick={(e) => e.stopPropagation()}>
                 <header className={styles.header}>
-                    <h2>Your Cart ({cart.length})</h2>
+                    <div className={styles.title}>
+                        <LuShoppingCart className={styles.cartIcon} />
+                        <h2>Your Cart ({cart.length})</h2>
+                    </div>
                     <button
                         type='button'
                         onClick={closeCart}

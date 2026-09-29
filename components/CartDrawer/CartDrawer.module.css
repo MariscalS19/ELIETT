@@ -31,12 +31,19 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.header h2 {
-    font-size: 1.25rem;
+.title {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.8rem;
     font-weight: 600;
     margin: 0;
     letter-spacing: 0.05em;
     text-transform: uppercase;
+}
+
+.cartIcon {
+    font-size: 1.2rem;
 }
 
 .closeButton {
