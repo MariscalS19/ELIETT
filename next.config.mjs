@@ -1,6 +1,5 @@
-import type { NextConfig } from 'next';
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
     serverExternalPackages: ['argon2-wasm'],
     trailingSlash: true,
     experimental: {
