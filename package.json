@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
-        "build": "next build --webpack",
+        "build": "next build",
         "start": "next start -p $PORT",
         "lint": "eslint",
         "test": "rm -rf .next && next build && next start -p 3003"
@@ -23,6 +23,7 @@
         "sortablejs": "^1.15.7"
     },
     "devDependencies": {
+        "@next/swc-wasm-nodejs": "16.3.5",
         "@tailwindcss/postcss": "^4",
         "@types/node": "^20.19.43",
         "@types/react": "^19",
